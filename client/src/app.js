@@ -2,6 +2,7 @@ import { Component } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Report from "./report";
 import axios from "axios";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export default class App extends Component {
     constructor() {
