@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
+import draftReducer from "./draftreports/slice.js";
 
 const rootReducer = combineReducers({
-    friendsAndWannabees: "",
+    draftReports: draftReducer,
 });
 
 export default rootReducer;

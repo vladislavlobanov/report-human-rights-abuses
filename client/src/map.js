@@ -5,7 +5,12 @@ import ReactMapGL, {
 } from "react-map-gl";
 import { useState, useEffect } from "react";
 
-export default function Map({ mapboxApiAccessToken, center, handlePinChange }) {
+export default function Map({
+    mapboxApiAccessToken,
+    center,
+    handlePinChange,
+    deleteLocation,
+}) {
     const navControlStyle = {
         right: 10,
         top: 10,
@@ -21,6 +26,13 @@ export default function Map({ mapboxApiAccessToken, center, handlePinChange }) {
         longitude: "",
         latitude: "",
     });
+
+    useEffect(() => {
+        setLocation({
+            longitude: "",
+            latitude: "",
+        });
+    }, [deleteLocation]);
 
     useEffect(() => {
         setViewport({

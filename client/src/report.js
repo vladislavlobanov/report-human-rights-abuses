@@ -3,25 +3,29 @@ import GeocoderService from "@mapbox/mapbox-sdk/services/geocoding";
 const secrets = require("../../server/secrets.json");
 import Map from "./map";
 import InfoCard from "./infocard";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { receiveFriendsAndWannabees } from "./redux/friends/slice.js";
+import { receiveDrafts } from "./redux/draftreports/slice.js";
+import { socket } from "./socket.js";
 
 export default function Report() {
-    const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState([]);
     const [center, setCenter] = useState([]);
     const [pin, setPin] = useState();
     const [fields, setFields] = useState({});
+    const [location, setLocation] = useState(false);
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
     });
 
+    const drafts = useSelector((state) => state.receiveDrafts);
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch(receiveFriendsAndWannabees());
+        dispatch(receiveDrafts());
     }, []);
 
     const handlePinChange = (longitude, latitude) => {
@@ -46,18 +50,23 @@ export default function Report() {
         }
     }
 
+    const who = useRef();
+    const what = useRef();
+    const when = useRef();
+    const where = useRef();
+    const why = useRef();
+
     const handleMore = async (e) => {
         e.preventDefault();
-        try {
-            const resp = await axios.post("/api/sendreport", {
-                fields: fields,
-            });
-            if (resp.status == 200) {
-                console.log("all good");
-            }
-        } catch (err) {
-            console.log("Err in post api/sendreport");
-        }
+        socket.emit("newDraft", fields);
+        who.current.value = "";
+        what.current.value = "";
+        when.current.value = "";
+        where.current.value = "";
+        why.current.value = "";
+        setSearchTerm("");
+        setLocation(!location);
+        setFields({});
     };
 
     const searchHtml = (
@@ -115,6 +124,7 @@ export default function Report() {
                 <label htmlFor="who">Who:</label>
                 <input
                     name="who"
+                    ref={who}
                     onChange={(e) => {
                         handleInputs(e);
                     }}
@@ -122,6 +132,7 @@ export default function Report() {
                 <label htmlFor="what">What:</label>
                 <input
                     name="what"
+                    ref={what}
                     onChange={(e) => {
                         handleInputs(e);
                     }}
@@ -129,6 +140,7 @@ export default function Report() {
                 <label htmlFor="when">When:</label>
                 <input
                     name="when"
+                    ref={when}
                     onChange={(e) => {
                         handleInputs(e);
                     }}
@@ -138,6 +150,7 @@ export default function Report() {
                 <div className="whereContainer">
                     <input
                         autoComplete="off"
+                        ref={where}
                         name="where"
                         value={searchTerm}
                         onInput={onInput}
@@ -147,6 +160,7 @@ export default function Report() {
                 </div>
                 <label htmlFor="why">Why:</label>
                 <input
+                    ref={why}
                     name="why"
                     onChange={(e) => {
                         handleInputs(e);
@@ -176,6 +190,7 @@ export default function Report() {
                     center={center}
                     mapboxApiAccessToken={secrets.mapbox}
                     handlePinChange={handlePinChange}
+                    deleteLocation={location}
                 />
             </div>
 

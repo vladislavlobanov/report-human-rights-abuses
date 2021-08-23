@@ -6,6 +6,7 @@ const cookieSession = require("cookie-session");
 const secrets = require("./secrets");
 const user = require("./routers/user");
 const sendreport = require("./routers/sendreport");
+const db = require("../db.js");
 
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
@@ -39,9 +40,31 @@ server.listen(process.env.PORT || 3001, function () {
 });
 
 io.on("connection", async function (socket) {
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+    const userId = socket.request.session.userId;
     console.log(`socket with the id ${socket.id} is now connected`);
 
     socket.on("disconnect", function () {
         console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+
+    socket.on("newDraft", async (data) => {
+        try {
+            const { rows } = await db.insertReport(
+                userId,
+                data.who,
+                data.what,
+                data.when,
+                data.why,
+                data.longitude,
+                data.latitude
+            );
+
+            socket.emit("updateDrafts", rows);
+        } catch (err) {
+            console.log("Err in post api/sendreport");
+        }
     });
 });

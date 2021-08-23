@@ -13,6 +13,12 @@ DROP TABLE IF EXISTS report;
  CREATE TABLE report(
      id SERIAL PRIMARY KEY,
      user_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL, 
-     FiveW TEXT NOT NULL,
+     who TEXT NOT NULL,
+     what TEXT NOT NULL,
+     whenHappened TEXT NOT NULL,
+     why TEXT NOT NULL,
+     longitude TEXT NOT NULL,
+     latitude TEXT NOT NULL,
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );  
+

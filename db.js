@@ -27,9 +27,24 @@ module.exports.findUserById = (id) => {
     );
 };
 
-module.exports.insertReport = (userId, story) => {
-    return db.query(`INSERT INTO report (user_id, FiveW) VALUES ($1,$2);`, [
-        userId,
-        story,
-    ]);
+module.exports.insertReport = (
+    userId,
+    who,
+    what,
+    whenHappened,
+    why,
+    longitude,
+    latitude
+) => {
+    return db.query(
+        `INSERT INTO report (user_id, who, what, whenHappened, why, longitude, latitude) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id, who, what, whenHappened, why, longitude, latitude, timestamp;`,
+        [userId, who, what, whenHappened, why, longitude, latitude]
+    );
+};
+
+module.exports.getDrafts = (userId) => {
+    return db.query(
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE user_id = $1;`,
+        [userId]
+    );
 };
