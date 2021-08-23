@@ -25,3 +25,18 @@ button {
     width: 100%;
     height: 300px;
 }
+
+.dropDown {
+    display: flex;
+    overflow: hide;
+    flex-grow: 0;
+    flex-direction: column;
+    background-color: white;
+}
+
+.dropDownElement {
+    cursor: pointer;
+}
+.dropDownElement:hover {
+    background-color: grey;
+}

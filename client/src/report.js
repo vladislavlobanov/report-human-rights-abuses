@@ -1,22 +1,24 @@
 import GeocoderService from "@mapbox/mapbox-sdk/services/geocoding";
 const secrets = require("../../server/secrets.json");
 import Map from "./map";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Report() {
-    const [searchTerm, setSearchTerm] = useState();
+    const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState([]);
+    const [center, setCenter] = useState([]);
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
     });
 
-    useEffect(() => {
-        if (searchTerm) {
+    async function onInput(event) {
+        if (event.target.value) {
             let abort;
             (async () => {
+                const query = event.target.value;
                 const response = await geocoder
-                    .forwardGeocode({ searchTerm, limit: 5 })
+                    .forwardGeocode({ query, limit: 5 })
                     .send();
                 if (!abort) {
                     setSearchData(response.body.features);
@@ -26,17 +28,42 @@ export default function Report() {
                 abort = true;
             };
         }
-    }, [searchTerm]);
+    }
 
-    const handleChange = async (e) => {
-        console.log(secrets.mapbox);
-        const query = "Berlin";
-        const response = await geocoder
-            .forwardGeocode({ query, limit: 5 })
-            .send();
-        console.log(response.body.features); //return array
-        // need to manage requests sent out as in friends
-    };
+    const handleKeyPress = (e) => {};
+
+    const searchHtml = (
+        <>
+            {searchTerm && (
+                <>
+                    {searchTerm && searchData.length > 0 ? (
+                        <>
+                            <div className="dropDown">
+                                {searchData.map((searchData, index) => (
+                                    <div
+                                        key={index}
+                                        tabIndex={0}
+                                        className="dropDownElement"
+                                        onInput={onInput}
+                                        onClick={() => {
+                                            setSearchTerm(
+                                                searchData.place_name
+                                            );
+
+                                            setCenter(searchData.center);
+                                            setSearchData([]);
+                                        }}
+                                    >
+                                        {searchData.place_name}
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    ) : null}
+                </>
+            )}
+        </>
+    );
 
     return (
         <div className="reportContainer">
@@ -48,17 +75,27 @@ export default function Report() {
                 <input name="what" />
                 <label htmlFor="when">When:</label>
                 <input name="when" />
+
                 <label htmlFor="where">Where:</label>
-                <input
-                    name="where"
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                <div className="whereContainer">
+                    <input
+                        autoComplete="off"
+                        name="where"
+                        value={searchTerm}
+                        onInput={onInput}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => {
+                            handleKeyPress(e);
+                        }}
+                    />
+                    {searchHtml}
+                </div>
                 <label htmlFor="why">Why:</label>
                 <input name="why" />
                 <button>Submit</button>
             </form>
             <div className="map">
-                <Map mapboxApiAccessToken={secrets.mapbox} />
+                <Map center={center} mapboxApiAccessToken={secrets.mapbox} />
             </div>
         </div>
     );
