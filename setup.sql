@@ -8,3 +8,11 @@ CREATE TABLE users(
      hashed_password VARCHAR NOT NULL,
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  ); 
+
+DROP TABLE IF EXISTS report;
+ CREATE TABLE report(
+     id SERIAL PRIMARY KEY,
+     user_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL, 
+     FiveW TEXT NOT NULL,
+     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ );  

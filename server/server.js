@@ -5,6 +5,7 @@ const path = require("path");
 const cookieSession = require("cookie-session");
 const secrets = require("./secrets");
 const user = require("./routers/user");
+const sendreport = require("./routers/sendreport");
 
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
@@ -27,6 +28,7 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 app.use(user);
+app.use(sendreport);
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

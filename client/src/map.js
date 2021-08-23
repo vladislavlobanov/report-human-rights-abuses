@@ -5,7 +5,7 @@ import ReactMapGL, {
 } from "react-map-gl";
 import { useState, useEffect } from "react";
 
-export default function Map({ mapboxApiAccessToken, center }) {
+export default function Map({ mapboxApiAccessToken, center, handlePinChange }) {
     const navControlStyle = {
         right: 10,
         top: 10,
@@ -44,6 +44,7 @@ export default function Map({ mapboxApiAccessToken, center }) {
             onViewportChange={(viewport) => setViewport(viewport)}
             onClick={(e) => {
                 setLocation({ longitude: e.lngLat[0], latitude: e.lngLat[1] });
+                handlePinChange(e.lngLat[0], e.lngLat[1]);
             }}
         >
             {location.longitude && (
@@ -51,12 +52,13 @@ export default function Map({ mapboxApiAccessToken, center }) {
                     longitude={Number(location.longitude)}
                     latitude={Number(location.latitude)}
                     draggable={true}
-                    onDragEnd={(e) =>
+                    onDragEnd={(e) => {
                         setLocation({
                             longitude: e.lngLat[0],
                             latitude: e.lngLat[1],
-                        })
-                    }
+                        });
+                        handlePinChange(e.lngLat[0], e.lngLat[1]);
+                    }}
                 >
                     <svg
                         height={ICON_SIZE}

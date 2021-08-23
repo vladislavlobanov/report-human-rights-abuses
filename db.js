@@ -26,3 +26,10 @@ module.exports.findUserById = (id) => {
         [id]
     );
 };
+
+module.exports.insertReport = (userId, story) => {
+    return db.query(`INSERT INTO report (user_id, FiveW) VALUES ($1,$2);`, [
+        userId,
+        story,
+    ]);
+};
