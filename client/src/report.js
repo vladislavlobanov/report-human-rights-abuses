@@ -20,13 +20,13 @@ export default function Report() {
         accessToken: secrets.mapbox,
     });
 
-    const drafts = useSelector((state) => state.receiveDrafts);
-
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(receiveDrafts());
     }, []);
+
+    const drafts = useSelector((state) => state.draftReports);
 
     const handlePinChange = (longitude, latitude) => {
         setPin({ longitude: longitude, latitude: latitude });
@@ -117,9 +117,25 @@ export default function Report() {
         });
     }, [pin]);
 
+    const handleKeyPress = (e) => {
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            console.log("Down arrow key fired");
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            console.log("Up arrow key fired");
+        }
+    };
+
+    if (!drafts) {
+        return null;
+    }
+
     return (
         <div className="reportContainer">
-            <h1 onClick={() => console.log(fields)}>Report component</h1>
+            <h1 onClick={() => console.log(drafts)}>Report component</h1>
             <form>
                 <label htmlFor="who">Who:</label>
                 <input
@@ -151,10 +167,12 @@ export default function Report() {
                     <input
                         autoComplete="off"
                         ref={where}
+                        onClick={onInput}
                         name="where"
                         value={searchTerm}
                         onInput={onInput}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => handleKeyPress(e)}
                     />
                     {searchHtml}
                 </div>
@@ -193,8 +211,7 @@ export default function Report() {
                     deleteLocation={location}
                 />
             </div>
-
-            <InfoCard />
+            {drafts.length && <InfoCard drafts={drafts} />}
         </div>
     );
 }
