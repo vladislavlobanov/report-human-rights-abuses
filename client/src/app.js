@@ -57,6 +57,9 @@ export default class App extends Component {
                             />
                         )}
                     />
+                    <Route path="/finalize">
+                        <SendDrafts userId={this.state.userId} />
+                    </Route>
                 </>
             </BrowserRouter>
         );

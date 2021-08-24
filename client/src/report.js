@@ -129,10 +129,6 @@ export default function Report({ match, history }) {
         }
     };
 
-    if (!drafts) {
-        return null;
-    }
-
     return (
         <div className="reportContainer">
             <h1 onClick={() => console.log(drafts)}>Report component</h1>
@@ -218,7 +214,7 @@ export default function Report({ match, history }) {
                     deleteLocation={location}
                 />
             </div>
-            {drafts.length && <InfoCard drafts={drafts} />}
+            {drafts.length > 0 && <InfoCard drafts={drafts} />}
         </div>
     );
 }

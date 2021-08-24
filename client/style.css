@@ -40,3 +40,7 @@ button {
 .dropDownElement:hover {
     background-color: grey;
 }
+
+#makePublic {
+    width: 50px;
+}

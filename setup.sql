@@ -19,14 +19,18 @@ DROP TABLE IF EXISTS report;
      why TEXT NOT NULL,
      longitude TEXT NOT NULL,
      latitude TEXT NOT NULL,
-    linkId  INT REFERENCES links(id) ON DELETE CASCADE NOT NULL, 
+     linkId  INT REFERENCES links(id) ON DELETE CASCADE, 
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );  
 
- DROP TABLE IF EXISTS links;
+ DROP TABLE IF EXISTS links cascade;
   CREATE TABLE links(
      id SERIAL PRIMARY KEY,
+     user_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL, 
+     headline TEXT NOT NULL,
      link TEXT NOT NULL, 
+     code TEXT NOT NULL, 
+     hashedCode TEXT NOT NULL,
      public BOOLEAN, 
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );   

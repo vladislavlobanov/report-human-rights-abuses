@@ -48,3 +48,24 @@ module.exports.getDrafts = (userId) => {
         [userId]
     );
 };
+
+module.exports.insertLinks = (
+    userId,
+    headline,
+    link,
+    code,
+    hashedCode,
+    publicBoolean
+) => {
+    return db.query(
+        `INSERT INTO links (user_id, headline, link, code, hashedCode, public) VALUES ($1,$2, $3, $4, $5, $6) RETURNING id;`,
+        [userId, headline, link, code, hashedCode, publicBoolean]
+    );
+};
+
+module.exports.updateLinksReport = (link, userId) => {
+    return db.query(
+        `UPDATE report SET linkId = ($1) WHERE (user_id = ($2) AND (linkId IS NULL));`,
+        [link, userId]
+    );
+};

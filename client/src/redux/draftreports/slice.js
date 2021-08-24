@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function draftReducer(state = null, action) {
+export default function draftReducer(state = [], action) {
     if (action.type == "drafts/receivedDrafts") {
         state = action.payload.receivedDrafts;
     }
