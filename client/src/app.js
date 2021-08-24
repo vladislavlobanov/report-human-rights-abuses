@@ -4,8 +4,7 @@ import Report from "./report";
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 import SendDrafts from "./senddrafts";
-import PrivateRoute from "./privateroute";
-import caseProfile from "./caseProfile";
+import CaseProfile from "./caseProfile";
 
 export default class App extends Component {
     constructor(props) {
@@ -48,10 +47,7 @@ export default class App extends Component {
                     <Route
                         path="/case/:id"
                         render={(props) => (
-                            <PrivateRoute
-                                component={caseProfile}
-                                path="/case/:id"
-                                exact
+                            <CaseProfile
                                 key={props.match.url}
                                 match={props.match}
                                 history={props.history}

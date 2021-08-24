@@ -49,6 +49,13 @@ module.exports.getDrafts = (userId) => {
     );
 };
 
+module.exports.getDraftsSent = (userId) => {
+    return db.query(
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (user_id = $1 and (linkId IS NOT NULL));`,
+        [userId]
+    );
+};
+
 module.exports.insertLinks = (
     userId,
     headline,
@@ -79,5 +86,13 @@ module.exports.checkLink = (link) => {
         `SELECT link FROM links
         WHERE link = ($1);`,
         [link]
+    );
+};
+
+module.exports.getHashedCode = (code) => {
+    return db.query(
+        `SELECT hashedcode, user_id FROM links
+        WHERE code = ($1);`,
+        [code]
     );
 };
