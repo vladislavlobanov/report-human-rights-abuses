@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { socket } from "./socket.js";
 
-export default function Report() {
+export default function Report({ match, history }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState([]);
     const [center, setCenter] = useState([]);
@@ -199,7 +199,14 @@ export default function Report() {
                         <button onClick={(e) => handleMore(e)} disabled>
                             Add more
                         </button>
-                        <button disabled>Submit</button>
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                history.replace("/finalize");
+                            }}
+                        >
+                            Procced to submission
+                        </button>
                     </>
                 )}
             </form>

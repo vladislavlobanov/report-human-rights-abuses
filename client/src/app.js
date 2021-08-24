@@ -1,12 +1,15 @@
 import { Component } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import Report from "./report";
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
+import SendDrafts from "./senddrafts";
+import PrivateRoute from "./privateroute";
+import caseProfile from "./caseProfile";
 
 export default class App extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {};
     }
     async componentDidMount() {
@@ -17,6 +20,7 @@ export default class App extends Component {
                     first: resp.data.first,
                     last: resp.data.last,
                     userId: resp.data.userId,
+                    url: this.props.match,
                 });
             }
         } catch (err) {
@@ -29,7 +33,30 @@ export default class App extends Component {
             <BrowserRouter>
                 <>
                     <h1>App component</h1>
-                    <Report />
+                    <Route
+                        path="/draft"
+                        render={(props) => (
+                            <Report
+                                key={props.match.url}
+                                match={props.match}
+                                history={props.history}
+                            />
+                        )}
+                    />
+
+                    <Route
+                        path="/case/:id"
+                        render={(props) => (
+                            <PrivateRoute
+                                component={caseProfile}
+                                path="/case/:id"
+                                exact
+                                key={props.match.url}
+                                match={props.match}
+                                history={props.history}
+                            />
+                        )}
+                    />
                 </>
             </BrowserRouter>
         );
