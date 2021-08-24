@@ -35,3 +35,12 @@ DROP TABLE IF EXISTS report;
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );   
 
+
+  DROP TABLE IF EXISTS organizations;
+  CREATE TABLE organizations(
+     id SERIAL PRIMARY KEY,
+     name TEXT NOT NULL, 
+    email TEXT NOT NULL,
+     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ );   
+

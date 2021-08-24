@@ -4,6 +4,8 @@ const db = require("../../db");
 const bcrypt = require("../../bcrypt");
 const uidSafe = require("uid-safe");
 const cryptoRandomString = require("crypto-random-string");
+const ses = require("../ses");
+const secrets = require("../secrets");
 
 router.get("/getdrafts/", async (req, res) => {
     try {
@@ -24,7 +26,7 @@ router.post("/senddrafts/", async (req, res) => {
 
         const result = await db.insertLinks(
             req.session.userId,
-            "testHeadline",
+            req.body.headline,
             link,
             secretCode,
             hashedCode,
@@ -32,9 +34,29 @@ router.post("/senddrafts/", async (req, res) => {
         );
 
         await db.updateLinksReport(result.rows[0].id, req.session.userId);
+
+        if (!req.body.checked) {
+            await ses.sendEmail(
+                secrets.email,
+                `${req.headers.origin}/case/${link}`,
+                secretCode
+            );
+        }
+
+        console.log("Emails have been sent");
+
         res.sendStatus(200);
     } catch (err) {
         console.log("Err in post /senddrafts/", err);
+    }
+});
+
+router.get("/getorganizations/", async (req, res) => {
+    try {
+        const results = await db.getOrganizations();
+        res.json(results.rows);
+    } catch (err) {
+        console.log("Error in get /getorganizations/", err);
     }
 });
 

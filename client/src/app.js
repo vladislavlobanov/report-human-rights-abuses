@@ -15,6 +15,7 @@ export default class App extends Component {
     async componentDidMount() {
         try {
             const resp = await axios.get("/user");
+
             if (resp.data.success) {
                 this.setState({
                     first: resp.data.first,

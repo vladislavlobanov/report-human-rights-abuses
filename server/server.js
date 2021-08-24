@@ -5,6 +5,7 @@ const path = require("path");
 const cookieSession = require("cookie-session");
 const secrets = require("./secrets");
 const user = require("./routers/user");
+const profiles = require("./routers/profiles");
 const sendreport = require("./routers/sendreport");
 const db = require("../db.js");
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 app.use(user);
 app.use(sendreport);
+app.use(profiles);
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));

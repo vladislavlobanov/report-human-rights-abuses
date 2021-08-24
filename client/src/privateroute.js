@@ -1,23 +1,44 @@
 import { Route, Redirect } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const PrivateRoute = ({ component: Component, match: match, ...rest }) => {
-    const isValid = () => {
-        //axios request
-        if (match.params.id == 15) {
-            return true;
+    const [isValid, setValid] = useState(null);
+
+    useEffect(async () => {
+        const { data } = await axios.get("/checklink/", {
+            params: { id: match.params.id },
+        });
+
+        if (data.success == true) {
+            setValid(true);
         } else {
-            return false;
+            setValid(false);
         }
-    };
+    }, []);
+
+    // const isValid = () => {
+    // const { data } = await axios.get("/checklink/", {
+    //     params: { id: match.params.id },
+    // });
+
+    // if (data.success == true) {
+    //     return true;
+    // } else {
+    //     return false;
+    // }
+    // };
+
+    if (!isValid) {
+        return null;
+    }
 
     return (
-        // Show the component only when the user is logged in
-        // Otherwise, redirect the user to /signin page
         <Route
             {...match}
             {...rest}
             render={(props) =>
-                isValid() ? <Component {...props} /> : <Redirect to="/draft" />
+                isValid ? <Component {...props} /> : <Redirect to="/draft" />
             }
         />
     );

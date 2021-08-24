@@ -44,7 +44,7 @@ module.exports.insertReport = (
 
 module.exports.getDrafts = (userId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE user_id = $1;`,
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (user_id = $1 and (linkId IS NULL));`,
         [userId]
     );
 };
@@ -67,5 +67,17 @@ module.exports.updateLinksReport = (link, userId) => {
     return db.query(
         `UPDATE report SET linkId = ($1) WHERE (user_id = ($2) AND (linkId IS NULL));`,
         [link, userId]
+    );
+};
+
+module.exports.getOrganizations = () => {
+    return db.query(`SELECT name, email FROM organizations;`);
+};
+
+module.exports.checkLink = (link) => {
+    return db.query(
+        `SELECT link FROM links
+        WHERE link = ($1);`,
+        [link]
     );
 };
