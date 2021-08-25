@@ -49,10 +49,10 @@ module.exports.getDrafts = (userId) => {
     );
 };
 
-module.exports.getDraftsSent = (userId) => {
+module.exports.getDraftsSent = (reportId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (user_id = $1 and (linkId IS NOT NULL));`,
-        [userId]
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (id::TEXT = $1 and (linkId IS NOT NULL));`,
+        [reportId]
     );
 };
 
@@ -65,7 +65,7 @@ module.exports.insertLinks = (
     publicBoolean
 ) => {
     return db.query(
-        `INSERT INTO links (user_id, headline, link, code, hashedCode, public) VALUES ($1,$2, $3, $4, $5, $6) RETURNING id;`,
+        `INSERT INTO links (user_id, headline, link, code, hashedCode, publicOrNot) VALUES ($1,$2, $3, $4, $5, $6) RETURNING id;`,
         [userId, headline, link, code, hashedCode, publicBoolean]
     );
 };
@@ -83,8 +83,8 @@ module.exports.getOrganizations = () => {
 
 module.exports.checkLink = (link) => {
     return db.query(
-        `SELECT link FROM links
-        WHERE link = ($1);`,
+        `SELECT id, link, publicOrNot FROM links
+        WHERE (link = ($1) OR id::TEXT = ($1));`,
         [link]
     );
 };

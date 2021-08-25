@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS report;
      link TEXT NOT NULL, 
      code TEXT NOT NULL, 
      hashedCode TEXT NOT NULL,
-     public BOOLEAN, 
+     publicOrNot BOOLEAN, 
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );   
 

@@ -6,17 +6,45 @@ export default function CaseProfile({ match, history }) {
     const [isValid, setValid] = useState();
     const [inputData, setInputData] = useState();
     const [stories, setStories] = useState([]);
+    const [publicOrNot, setPublicOrNot] = useState();
 
     useEffect(async () => {
-        const { data } = await axios.get("/checklink/", {
-            params: { id: match.params.id },
-        });
+        try {
+            const { data } = await axios.get("/checklink/", {
+                params: { id: match.params.id },
+            });
 
-        if (data.success == true) {
-            setValid(true);
-        } else {
-            setValid(false);
-            history.replace("/");
+            if (data.success == true) {
+                if (data.publicOrNot == true) {
+                    setValid(true);
+                    setPublicOrNot(true);
+                    const { data: results } = await axios.get("/getreport/", {
+                        params: { caseId: match.params.id },
+                    });
+                    setStories(results);
+                } else {
+                    if (data.id == match.params.id) {
+                        setValid(false);
+                        history.replace("/");
+                    } else {
+                        setValid(true);
+                        setPublicOrNot(false);
+                        const { data: results } = await axios.get(
+                            "/getreport/",
+                            {
+                                params: { caseId: match.params.id },
+                            }
+                        );
+
+                        setStories(results);
+                    }
+                }
+            } else {
+                setValid(false);
+                history.replace("/");
+            }
+        } catch (err) {
+            console.log("Err in axios either /checklink or /getreport", err);
         }
     }, []);
 
@@ -38,7 +66,7 @@ export default function CaseProfile({ match, history }) {
         <>
             {isValid && (
                 <>
-                    {!stories.length && (
+                    {!stories.length && !publicOrNot && (
                         <>
                             <h3 onClick={() => console.log()}>
                                 This is a secret page

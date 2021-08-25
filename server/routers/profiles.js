@@ -10,6 +10,8 @@ router.get("/checklink/", async (req, res) => {
         if (results.rows.length == 1) {
             res.json({
                 success: true,
+                publicOrNot: results.rows[0].publicornot,
+                id: results.rows[0].id,
             });
         } else {
             res.json({
@@ -43,6 +45,15 @@ router.post("/verify/", async (req, res) => {
         }
     } catch (err) {
         console.log("Error in post /verify: ", err);
+    }
+});
+
+router.get("/getreport/", async (req, res) => {
+    try {
+        const { rows: rowsData } = await db.getDraftsSent(req.query.caseId);
+        res.json(rowsData);
+    } catch (err) {
+        console.log("Error in get /getreport/", err);
     }
 });
 
