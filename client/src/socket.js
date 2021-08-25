@@ -26,4 +26,8 @@ export const init = (store) => {
     socket.on("updateDraftsWDelete", (data) => {
         store.dispatch(deleteDraft(data));
     });
+
+    socket.on("updateEditedDraft", (data) => {
+        store.dispatch(draftReceived(data));
+    });
 };

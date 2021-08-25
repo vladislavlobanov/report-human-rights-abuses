@@ -10,7 +10,6 @@ export default function draftReducer(state = [], action) {
 
     if (action.type === "drafts/deleteDraft") {
         state = state.filter((draft) => {
-            console.log(draft.id, action.payload.id.id);
             return draft.id !== action.payload.id;
         });
     }

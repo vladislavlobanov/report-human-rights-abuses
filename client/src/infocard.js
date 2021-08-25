@@ -1,19 +1,18 @@
 import axios from "axios";
 import { socket } from "./socket.js";
 
-export default function InfoCard({ drafts, showButton }) {
+export default function InfoCard({ drafts, showButton, handleEdit }) {
     const handleDelete = (e, draftId) => {
         e.preventDefault();
         socket.emit("deleteDraft", draftId);
     };
+
     return (
         <>
             <h3>Info Cards</h3>
             {drafts.map((draft) => (
                 <div key={draft.id}>
-                    <div onClick={() => console.log(draft.id)}>
-                        Who: {draft.who}
-                    </div>
+                    <div>Who: {draft.who}</div>
                     <div>What: {draft.what}</div>
                     <div>When: {draft.whenhappened}</div>
                     <div>
@@ -25,7 +24,21 @@ export default function InfoCard({ drafts, showButton }) {
                             <button onClick={(e) => handleDelete(e, draft.id)}>
                                 DELETE
                             </button>
-                            <button>EDIT</button>
+                            <button
+                                onClick={(e) => {
+                                    handleEdit(e, {
+                                        id: draft.id,
+                                        who: draft.who,
+                                        what: draft.what,
+                                        when: draft.whenhappened,
+                                        longitude: draft.longitude,
+                                        latitude: draft.latitude,
+                                        why: draft.why,
+                                    });
+                                }}
+                            >
+                                EDIT
+                            </button>
                         </>
                     )}
                 </div>

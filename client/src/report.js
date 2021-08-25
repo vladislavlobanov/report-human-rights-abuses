@@ -15,6 +15,8 @@ export default function Report({ match, history }) {
     const [pin, setPin] = useState();
     const [fields, setFields] = useState({});
     const [location, setLocation] = useState(false);
+    const [receivedPin, setReceivedPin] = useState({});
+    const [draftId, setDraftId] = useState();
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
@@ -58,15 +60,28 @@ export default function Report({ match, history }) {
 
     const handleMore = async (e) => {
         e.preventDefault();
-        socket.emit("newDraft", fields);
-        who.current.value = "";
-        what.current.value = "";
-        when.current.value = "";
-        where.current.value = "";
-        why.current.value = "";
-        setSearchTerm("");
-        setLocation(!location);
-        setFields({});
+        if (!draftId) {
+            socket.emit("newDraft", fields);
+            who.current.value = "";
+            what.current.value = "";
+            when.current.value = "";
+            where.current.value = "";
+            why.current.value = "";
+            setSearchTerm("");
+            setLocation(!location);
+            setFields({});
+        } else {
+            socket.emit("editDraft", fields);
+            who.current.value = "";
+            what.current.value = "";
+            when.current.value = "";
+            where.current.value = "";
+            why.current.value = "";
+            setSearchTerm("");
+            setLocation(!location);
+            setFields({});
+            setDraftId("");
+        }
     };
 
     const searchHtml = (
@@ -129,6 +144,31 @@ export default function Report({ match, history }) {
         }
     };
 
+    const handleEdit = (e, data) => {
+        e.preventDefault();
+        who.current.value = data.who;
+        what.current.value = data.what;
+        when.current.value = data.when;
+        why.current.value = data.why;
+        setCenter([Number(data.longitude), Number(data.latitude)]);
+        setReceivedPin({
+            longitude: Number(data.longitude),
+            latitude: Number(data.latitude),
+        });
+
+        setFields({
+            who: data.who,
+            what: data.what,
+            when: data.when,
+            longitude: Number(data.longitude),
+            latitude: Number(data.latitude),
+            why: data.why,
+            draftId: data.id,
+        });
+        setDraftId(data.id);
+        socket.emit("deleteDraft", data.id, true);
+    };
+
     return (
         <div className="reportContainer">
             <h1>Report component</h1>
@@ -187,13 +227,13 @@ export default function Report({ match, history }) {
                 fields.latitude &&
                 fields.why ? (
                     <>
-                        <button onClick={(e) => handleMore(e)}>Add more</button>
+                        <button onClick={(e) => handleMore(e)}>Save</button>
                         <button>Submit</button>
                     </>
                 ) : (
                     <>
                         <button onClick={(e) => handleMore(e)} disabled>
-                            Add more
+                            Save
                         </button>
                         <button
                             onClick={(e) => {
@@ -212,9 +252,16 @@ export default function Report({ match, history }) {
                     mapboxApiAccessToken={secrets.mapbox}
                     handlePinChange={handlePinChange}
                     deleteLocation={location}
+                    receivedPin={receivedPin}
                 />
             </div>
-            {drafts.length > 0 && <InfoCard drafts={drafts} showButton={true} />}
+            {drafts.length > 0 && (
+                <InfoCard
+                    drafts={drafts}
+                    showButton={true}
+                    handleEdit={handleEdit}
+                />
+            )}
         </div>
     );
 }

@@ -116,3 +116,18 @@ module.exports.deleteDraft = (draftId) => {
         [draftId]
     );
 };
+
+module.exports.editDraft = (
+    draftId,
+    who,
+    what,
+    whenHappened,
+    why,
+    longitude,
+    latitude
+) => {
+    return db.query(
+        `UPDATE report SET who = ($2), what = ($3), whenHappened = ($4), why = ($5), longitude = ($6), latitude = ($7) WHERE id = ($1) RETURNING id, who, what, whenHappened, why, longitude, latitude, timestamp;`,
+        [draftId, who, what, whenHappened, why, longitude, latitude]
+    );
+};

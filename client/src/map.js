@@ -10,6 +10,7 @@ export default function Map({
     center,
     handlePinChange,
     deleteLocation,
+    receivedPin,
 }) {
     const navControlStyle = {
         right: 10,
@@ -33,6 +34,13 @@ export default function Map({
             latitude: "",
         });
     }, [deleteLocation]);
+
+    useEffect(() => {
+        setLocation({
+            longitude: receivedPin.longitude,
+            latitude: receivedPin.latitude,
+        });
+    }, [receivedPin]);
 
     useEffect(() => {
         setViewport({

@@ -66,16 +66,38 @@ io.on("connection", async function (socket) {
 
             socket.emit("updateDrafts", rows);
         } catch (err) {
-            console.log("Err in post api/sendreport");
+            console.log("Err in db insertReport socket");
         }
     });
 
-    socket.on("deleteDraft", async (data) => {
+    socket.on("editDraft", async (data) => {
         try {
-            await db.deleteDraft(data);
-            socket.emit("updateDraftsWDelete", data);
+            const results = await db.editDraft(
+                data.draftId,
+                data.who,
+                data.what,
+                data.when,
+                data.why,
+                data.longitude,
+                data.latitude
+            );
+
+            socket.emit("updateEditedDraft", results.rows);
         } catch (err) {
-            console.log("Err in deleteDraft server", err);
+            console.log("Err in db editDraft socket");
+        }
+    });
+
+    socket.on("deleteDraft", async (data, secondarg) => {
+        if (secondarg) {
+            socket.emit("updateDraftsWDelete", data);
+        } else {
+            try {
+                await db.deleteDraft(data);
+                socket.emit("updateDraftsWDelete", data);
+            } catch (err) {
+                console.log("Err in deleteDraft server", err);
+            }
         }
     });
 
