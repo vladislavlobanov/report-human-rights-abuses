@@ -7,6 +7,7 @@ export default function CaseProfile({ match, history }) {
     const [inputData, setInputData] = useState();
     const [stories, setStories] = useState([]);
     const [publicOrNot, setPublicOrNot] = useState();
+    const [caseId, setCaseId] = useState();
 
     useEffect(async () => {
         try {
@@ -29,14 +30,7 @@ export default function CaseProfile({ match, history }) {
                     } else {
                         setValid(true);
                         setPublicOrNot(false);
-                        const { data: results } = await axios.get(
-                            "/getreport/",
-                            {
-                                params: { caseId: match.params.id },
-                            }
-                        );
-
-                        setStories(results);
+                        setCaseId(data.id);
                     }
                 }
             } else {
@@ -51,7 +45,10 @@ export default function CaseProfile({ match, history }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post("/verify/", { code: inputData });
+            const { data } = await axios.post("/verify/", {
+                code: inputData,
+                caseId: caseId,
+            });
             setStories(data);
         } catch (err) {
             console.log("Err in axios post /verify/");

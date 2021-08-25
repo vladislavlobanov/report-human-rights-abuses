@@ -51,7 +51,7 @@ module.exports.getDrafts = (userId) => {
 
 module.exports.getDraftsSent = (reportId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (id::TEXT = $1 and (linkId IS NOT NULL));`,
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (linkId = $1);`,
         [reportId]
     );
 };

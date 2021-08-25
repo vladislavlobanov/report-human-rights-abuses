@@ -36,7 +36,7 @@ router.post("/verify/", async (req, res) => {
 
             if (comparison == true) {
                 const { rows: rowsData } = await db.getDraftsSent(
-                    rows[0].user_id
+                    req.body.caseId
                 );
                 res.json(rowsData);
             } else {

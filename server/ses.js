@@ -23,7 +23,9 @@ exports.sendEmail = function (recipient, link, code) {
             Message: {
                 Body: {
                     Text: {
-                        Data: `Link to the case ${link} and your code to access the page ${code}`,
+                        Data: code
+                            ? `Link to the case ${link} and your code to access the page ${code}`
+                            : `Link to the case ${link}`,
                     },
                 },
                 Subject: {

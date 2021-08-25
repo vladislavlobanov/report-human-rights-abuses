@@ -41,6 +41,12 @@ router.post("/senddrafts/", async (req, res) => {
                 `${req.headers.origin}/case/${link}`,
                 secretCode
             );
+        } else {
+            await ses.sendEmail(
+                secrets.email,
+                `${req.headers.origin}/case/${result.rows[0].id}`,
+                null
+            );
         }
 
         console.log("Emails have been sent");
