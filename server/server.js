@@ -109,4 +109,8 @@ io.on("connection", async function (socket) {
     socket.on("newHeadline", (data) => {
         io.emit("updateHeadlines", data);
     });
+
+    socket.on("newSet", (data) => {
+        io.emit("updateHeadlinesWNewSet", data);
+    });
 });

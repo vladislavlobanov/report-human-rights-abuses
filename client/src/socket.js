@@ -4,6 +4,7 @@ import { draftReceived, deleteDraft } from "./redux/draftreports/slice.js";
 import {
     headlinesReceived,
     headlineReceived,
+    updatedSetHeadlinesReceived,
 } from "./redux/headlines/slice.js";
 
 export const init = (store) => {
@@ -17,6 +18,10 @@ export const init = (store) => {
 
     socket.on("updateHeadlines", (data) => {
         store.dispatch(headlineReceived(data));
+    });
+
+    socket.on("updateHeadlinesWNewSet", (data) => {
+        store.dispatch(updatedSetHeadlinesReceived(data));
     });
 
     socket.on("updateDrafts", (data) => {

@@ -114,8 +114,22 @@ module.exports.getLastTenHeadlines = () => {
         JOIN users ON users.id = links.user_id
         WHERE (publicOrNot = TRUE)
         ORDER BY timestamp DESC
-        LIMIT 10;
+        LIMIT 2;
     `);
+};
+
+module.exports.getMoreHeadlines = (id) => {
+    return db.query(
+        `
+        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email,
+        (SELECT links.id FROM links WHERE (publicOrNot = TRUE) ORDER BY id ASC LIMIT 1) AS "lowestId" FROM links
+        JOIN users ON users.id = links.user_id
+        WHERE (publicOrNot = TRUE AND links.id < $1) 
+        ORDER BY timestamp DESC
+        LIMIT 2;
+    `,
+        [id]
+    );
 };
 
 module.exports.deleteDraft = (draftId) => {

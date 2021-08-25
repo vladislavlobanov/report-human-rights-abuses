@@ -15,7 +15,6 @@ export default function Search() {
                 );
                 if (!abort) {
                     setSearchData(data);
-                    console.log(searchData);
                 }
             })();
             return () => {
@@ -24,6 +23,21 @@ export default function Search() {
         }
     }, [searchTerm]);
 
+    const dateConverter = (dateToConvert) => {
+        let d = new Date(dateToConvert);
+        var options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: false,
+        };
+        d = new Intl.DateTimeFormat("en-US", options).format(d).toString();
+        return d;
+    };
+
     return (
         <>
             <h3>Search</h3>
@@ -31,6 +45,37 @@ export default function Search() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Enter your search request"
             ></input>
+            {searchTerm && (
+                <>
+                    {searchTerm && searchData.length > 0 ? (
+                        <>
+                            {searchData.map((searchData, index) => (
+                                <div key={index}>
+                                    <div>
+                                        <Link to={`/case/${searchData.id}`}>
+                                            {searchData.first} {searchData.last}
+                                        </Link>
+                                    </div>
+                                    <div>
+                                        Published on{" "}
+                                        <span>
+                                            {dateConverter(
+                                                searchData.timestamp
+                                            )}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        SHORT TEXT SENT BY USER:{" "}
+                                        {searchData.headline}{" "}
+                                    </div>
+                                </div>
+                            ))}
+                        </>
+                    ) : (
+                        <div>Nothing has been found</div>
+                    )}
+                </>
+            )}
         </>
     );
 }

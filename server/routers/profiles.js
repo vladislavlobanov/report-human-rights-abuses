@@ -67,4 +67,13 @@ router.get("/api/search-cases/:val", async (req, res) => {
     }
 });
 
+router.get("/getmore", async (req, res) => {
+    try {
+        const results = await db.getMoreHeadlines(req.query.id);
+        res.json(results.rows);
+    } catch (err) {
+        console.log("Error in post /getmore db query: ", err);
+    }
+});
+
 module.exports = router;
