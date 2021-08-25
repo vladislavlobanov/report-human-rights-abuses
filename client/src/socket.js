@@ -1,6 +1,6 @@
 export let socket;
 import { io } from "socket.io-client";
-import { draftReceived } from "./redux/draftreports/slice.js";
+import { draftReceived, deleteDraft } from "./redux/draftreports/slice.js";
 import {
     headlinesReceived,
     headlineReceived,
@@ -21,5 +21,9 @@ export const init = (store) => {
 
     socket.on("updateDrafts", (data) => {
         store.dispatch(draftReceived(data));
+    });
+
+    socket.on("updateDraftsWDelete", (data) => {
+        store.dispatch(deleteDraft(data));
     });
 };

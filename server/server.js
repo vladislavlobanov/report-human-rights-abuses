@@ -70,8 +70,16 @@ io.on("connection", async function (socket) {
         }
     });
 
+    socket.on("deleteDraft", async (data) => {
+        try {
+            await db.deleteDraft(data);
+            socket.emit("updateDraftsWDelete", data);
+        } catch (err) {
+            console.log("Err in deleteDraft server", err);
+        }
+    });
+
     const { rows: headlinesRows } = await db.getLastTenHeadlines();
-    console.log(headlinesRows);
     socket.emit("lastHeadlines", headlinesRows);
 
     socket.on("newHeadline", (data) => {

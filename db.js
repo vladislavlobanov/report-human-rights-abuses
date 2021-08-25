@@ -107,3 +107,12 @@ module.exports.getLastTenHeadlines = () => {
         LIMIT 10;
     `);
 };
+
+module.exports.deleteDraft = (draftId) => {
+    return db.query(
+        `
+        DELETE FROM report WHERE id = ($1);
+    `,
+        [draftId]
+    );
+};

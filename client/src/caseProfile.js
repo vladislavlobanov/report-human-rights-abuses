@@ -87,7 +87,9 @@ export default function CaseProfile({ match, history }) {
                         </>
                     )}
 
-                    {stories.length > 0 && <InfoCard drafts={stories} />}
+                    {stories.length > 0 && (
+                        <InfoCard drafts={stories} showButton={false} />
+                    )}
                 </>
             )}
         </>

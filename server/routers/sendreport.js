@@ -75,4 +75,13 @@ router.get("/getorganizations/", async (req, res) => {
     }
 });
 
+router.post("/deletedraft/", async (req, res) => {
+    try {
+        await db.deleteDraft(req.body.id);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log("Error in get /getorganizations/", err);
+    }
+});
+
 module.exports = router;

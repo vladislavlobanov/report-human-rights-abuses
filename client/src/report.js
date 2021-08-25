@@ -131,7 +131,7 @@ export default function Report({ match, history }) {
 
     return (
         <div className="reportContainer">
-            <h1 onClick={() => console.log(drafts)}>Report component</h1>
+            <h1>Report component</h1>
             <form>
                 <label htmlFor="who">Who:</label>
                 <input
@@ -214,7 +214,7 @@ export default function Report({ match, history }) {
                     deleteLocation={location}
                 />
             </div>
-            {drafts.length > 0 && <InfoCard drafts={drafts} />}
+            {drafts.length > 0 && <InfoCard drafts={drafts} showButton={true} />}
         </div>
     );
 }
