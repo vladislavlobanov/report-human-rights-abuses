@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import { socket } from "./socket.js";
 
 export default function SendDrafts({ userId }) {
     const [headline, setHeadline] = useState();
@@ -25,11 +26,32 @@ export default function SendDrafts({ userId }) {
         e.preventDefault();
 
         try {
-            await axios.post("/senddrafts/", {
+            const { data } = await axios.post("/senddrafts/", {
                 headline,
                 checked,
                 selectedOption,
             });
+
+            if (selectedOption) {
+                console.log({
+                    id: data.linkId,
+                    user_id: data.userId,
+                    headline: data.headline,
+                    timestamp: data.timestamp,
+                    first: data.first,
+                    last: data.last,
+                    email: data.email,
+                });
+                socket.emit("newHeadline", {
+                    id: data.linkId,
+                    user_id: data.userId,
+                    headline: data.headline,
+                    timestamp: data.timestamp,
+                    first: data.first,
+                    last: data.last,
+                    email: data.email,
+                });
+            }
         } catch (err) {
             console.log("Err in axios post /senddrafts/");
         }

@@ -21,7 +21,7 @@ module.exports.findUser = (email) => {
 
 module.exports.findUserById = (id) => {
     return db.query(
-        `SELECT first, last, id FROM users
+        `SELECT first, last, id, email FROM users
         WHERE id = ($1);`,
         [id]
     );
@@ -65,7 +65,7 @@ module.exports.insertLinks = (
     publicBoolean
 ) => {
     return db.query(
-        `INSERT INTO links (user_id, headline, link, code, hashedCode, publicOrNot) VALUES ($1,$2, $3, $4, $5, $6) RETURNING id;`,
+        `INSERT INTO links (user_id, headline, link, code, hashedCode, publicOrNot) VALUES ($1,$2, $3, $4, $5, $6) RETURNING id, timestamp, headline, publicOrNot;`,
         [userId, headline, link, code, hashedCode, publicBoolean]
     );
 };
@@ -95,4 +95,15 @@ module.exports.getHashedCode = (code) => {
         WHERE code = ($1);`,
         [code]
     );
+};
+
+module.exports.getLastTenHeadlines = () => {
+    return db.query(`
+        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email
+        FROM links
+        JOIN users ON users.id = links.user_id
+        WHERE (publicOrNot = TRUE)
+        ORDER BY timestamp DESC
+        LIMIT 10;
+    `);
 };

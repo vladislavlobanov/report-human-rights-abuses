@@ -69,4 +69,12 @@ io.on("connection", async function (socket) {
             console.log("Err in post api/sendreport");
         }
     });
+
+    const { rows: headlinesRows } = await db.getLastTenHeadlines();
+    console.log(headlinesRows);
+    socket.emit("lastHeadlines", headlinesRows);
+
+    socket.on("newHeadline", (data) => {
+        io.emit("updateHeadlines", data);
+    });
 });

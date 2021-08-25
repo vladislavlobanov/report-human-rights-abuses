@@ -35,23 +35,32 @@ router.post("/senddrafts/", async (req, res) => {
 
         await db.updateLinksReport(result.rows[0].id, req.session.userId);
 
-        if (!req.body.checked) {
-            await ses.sendEmail(
-                secrets.email,
-                `${req.headers.origin}/case/${link}`,
-                secretCode
-            );
-        } else {
-            await ses.sendEmail(
-                secrets.email,
-                `${req.headers.origin}/case/${result.rows[0].id}`,
-                null
-            );
-        }
+        // if (!req.body.checked) {
+        //     await ses.sendEmail(
+        //         secrets.email,
+        //         `${req.headers.origin}/case/${link}`,
+        //         secretCode
+        //     );
+        // } else {
+        //     await ses.sendEmail(
+        //         secrets.email,
+        //         `${req.headers.origin}/case/${result.rows[0].id}`,
+        //         null
+        //     );
+        // }
 
         console.log("Emails have been sent");
 
-        res.sendStatus(200);
+        const userData = await db.findUserById(req.session.userId);
+        res.json({
+            linkId: result.rows[0].id,
+            userId: req.session.userId,
+            headline: result.rows[0].headline,
+            timestamp: result.rows[0].timestamp,
+            first: userData.rows[0].first,
+            last: userData.rows[0].last,
+            email: userData.rows[0].email,
+        });
     } catch (err) {
         console.log("Err in post /senddrafts/", err);
     }

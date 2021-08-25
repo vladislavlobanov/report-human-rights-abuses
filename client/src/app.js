@@ -5,6 +5,7 @@ import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 import SendDrafts from "./senddrafts";
 import CaseProfile from "./caseProfile";
+import Feed from "./feed";
 
 export default class App extends Component {
     constructor(props) {
@@ -33,6 +34,7 @@ export default class App extends Component {
             <BrowserRouter>
                 <>
                     <h1>App component</h1>
+                    <Route exact path="/" component={Feed} />
                     <Route
                         path="/draft"
                         render={(props) => (
