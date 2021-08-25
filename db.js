@@ -151,3 +151,18 @@ module.exports.editDraft = (
         ]
     );
 };
+
+module.exports.searchUsers = (val) => {
+    return db.query(
+        `
+        SELECT DISTINCT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email
+        FROM links
+        JOIN users ON users.id = links.user_id
+        JOIN report ON links.id = report.linkId
+        WHERE (links.publicOrNot = TRUE) AND (report.who || ' ' || report.what || ' ' || report.whenHappened || ' ' || report.why || ' ' || report.whereHappened || ' ' || links.headline || ' ' || users.first || ' ' || users.last) ILIKE $1
+        ORDER BY timestamp DESC
+        LIMIT 5;
+    `,
+        ["%" + val + "%"]
+    );
+};

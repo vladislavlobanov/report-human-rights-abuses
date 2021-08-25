@@ -57,4 +57,14 @@ router.get("/getreport/", async (req, res) => {
     }
 });
 
+router.get("/api/search-cases/:val", async (req, res) => {
+    try {
+        console.log(req.params.val);
+        const results = await db.searchUsers(req.params.val);
+        res.json(results.rows);
+    } catch (err) {
+        console.log("Error in post /api/search-users db query: ", err);
+    }
+});
+
 module.exports = router;

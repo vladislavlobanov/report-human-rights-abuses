@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import SendDrafts from "./senddrafts";
 import CaseProfile from "./caseProfile";
 import Feed from "./feed";
+import Search from "./search";
 
 export default class App extends Component {
     constructor(props) {
@@ -35,6 +36,7 @@ export default class App extends Component {
                 <>
                     <h1>App component</h1>
                     <Route exact path="/" component={Feed} />
+                    <Route exact path="/search" component={Search} />
                     <Route
                         path="/draft"
                         render={(props) => (
