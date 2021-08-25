@@ -1,10 +1,30 @@
 import { useSelector } from "react-redux";
+import { useState, useLayoutEffect } from "react";
+
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { socket } from "./socket.js";
 
 export default function Feed() {
     const headlines = useSelector((state) => state.headlines);
+    const [lowest, setLowest] = useState();
+    const [hideMoreButton, setHideMoreButton] = useState(false);
+    const [receivedData, setData] = useState();
+
+    useLayoutEffect(() => {
+        if (!headlines) {
+            return;
+        }
+        let newArr = [];
+        for (let i = 0; i < headlines.length; i++) {
+            newArr.push(headlines[i].id);
+        }
+        let lowestId = newArr.sort((a, b) => a - b)[0];
+        setLowest(lowestId);
+        if (lowestId == receivedData) {
+            setHideMoreButton(true);
+        }
+    }, [headlines]);
 
     if (!headlines) {
         return null;
@@ -26,13 +46,6 @@ export default function Feed() {
     };
 
     const moreHeadlines = async () => {
-        let newArr = [];
-        for (let i = 0; i < headlines.length; i++) {
-            newArr.push(headlines[i].id);
-        }
-        let lowest = newArr.sort((a, b) => a - b)[0];
-        console.log(lowest);
-
         try {
             const { data } = await axios.get("/getmore", {
                 params: {
@@ -51,8 +64,8 @@ export default function Feed() {
                     user_id: el.user_id,
                 };
             });
-
             socket.emit("newSet", newSet);
+            setData(data[0].lowestId);
         } catch (err) {
             console.log("Err in getting more headlines", err);
         }
@@ -86,9 +99,11 @@ export default function Feed() {
                                     </div>
                                 </div>
                             ))}
-                            <button onClick={() => moreHeadlines()}>
-                                More
-                            </button>
+                            {!hideMoreButton && (
+                                <button onClick={() => moreHeadlines()}>
+                                    More
+                                </button>
+                            )}
                         </div>
                     </>
                 )}
