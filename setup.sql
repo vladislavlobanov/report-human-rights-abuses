@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS report;
      what TEXT NOT NULL,
      whenHappened TEXT NOT NULL,
      why TEXT NOT NULL,
+     whereHappened TEXT NOT NULL,
      longitude TEXT NOT NULL,
      latitude TEXT NOT NULL,
      linkId  INT REFERENCES links(id) ON DELETE CASCADE, 

@@ -54,6 +54,7 @@ io.on("connection", async function (socket) {
 
     socket.on("newDraft", async (data) => {
         try {
+            console.log(data);
             const { rows } = await db.insertReport(
                 userId,
                 data.who,
@@ -61,12 +62,12 @@ io.on("connection", async function (socket) {
                 data.when,
                 data.why,
                 data.longitude,
-                data.latitude
+                data.latitude,
+                data.where
             );
-
             socket.emit("updateDrafts", rows);
         } catch (err) {
-            console.log("Err in db insertReport socket");
+            console.log("Err in db insertReport socket", err);
         }
     });
 
@@ -79,7 +80,8 @@ io.on("connection", async function (socket) {
                 data.when,
                 data.why,
                 data.longitude,
-                data.latitude
+                data.latitude,
+                data.where
             );
 
             socket.emit("updateEditedDraft", results.rows);

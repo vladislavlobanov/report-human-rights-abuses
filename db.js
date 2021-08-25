@@ -34,24 +34,34 @@ module.exports.insertReport = (
     whenHappened,
     why,
     longitude,
-    latitude
+    latitude,
+    wherehappened
 ) => {
     return db.query(
-        `INSERT INTO report (user_id, who, what, whenHappened, why, longitude, latitude) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id, who, what, whenHappened, why, longitude, latitude, timestamp;`,
-        [userId, who, what, whenHappened, why, longitude, latitude]
+        `INSERT INTO report (user_id, who, what, whenHappened, why, longitude, latitude, wherehappened) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened;`,
+        [
+            userId,
+            who,
+            what,
+            whenHappened,
+            why,
+            longitude,
+            latitude,
+            wherehappened,
+        ]
     );
 };
 
 module.exports.getDrafts = (userId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (user_id = $1 and (linkId IS NULL));`,
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (user_id = $1 and (linkId IS NULL));`,
         [userId]
     );
 };
 
 module.exports.getDraftsSent = (reportId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp FROM report WHERE (linkId = $1);`,
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (linkId = $1);`,
         [reportId]
     );
 };
@@ -124,10 +134,20 @@ module.exports.editDraft = (
     whenHappened,
     why,
     longitude,
-    latitude
+    latitude,
+    wherehappened
 ) => {
     return db.query(
-        `UPDATE report SET who = ($2), what = ($3), whenHappened = ($4), why = ($5), longitude = ($6), latitude = ($7) WHERE id = ($1) RETURNING id, who, what, whenHappened, why, longitude, latitude, timestamp;`,
-        [draftId, who, what, whenHappened, why, longitude, latitude]
+        `UPDATE report SET who = ($2), what = ($3), whenHappened = ($4), why = ($5), longitude = ($6), latitude = ($7), wherehappened = ($8) WHERE id = ($1) RETURNING id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened;`,
+        [
+            draftId,
+            who,
+            what,
+            whenHappened,
+            why,
+            longitude,
+            latitude,
+            wherehappened,
+        ]
     );
 };

@@ -61,6 +61,7 @@ export default function Report({ match, history }) {
     const handleMore = async (e) => {
         e.preventDefault();
         if (!draftId) {
+            console.log(fields);
             socket.emit("newDraft", fields);
             who.current.value = "";
             what.current.value = "";
@@ -101,6 +102,11 @@ export default function Report({ match, history }) {
                                             setSearchTerm(
                                                 searchData.place_name
                                             );
+                                            setFields({
+                                                ...fields,
+                                                where: searchData.place_name,
+                                                ...pin,
+                                            });
 
                                             setCenter(searchData.center);
                                             setSearchData([]);
@@ -132,24 +138,13 @@ export default function Report({ match, history }) {
         });
     }, [pin]);
 
-    const handleKeyPress = (e) => {
-        if (e.key === "ArrowDown") {
-            e.preventDefault();
-            console.log("Down arrow key fired");
-        }
-
-        if (e.key === "ArrowUp") {
-            e.preventDefault();
-            console.log("Up arrow key fired");
-        }
-    };
-
     const handleEdit = (e, data) => {
         e.preventDefault();
         who.current.value = data.who;
         what.current.value = data.what;
         when.current.value = data.when;
         why.current.value = data.why;
+        where.current.value = data.wherehappened;
         setCenter([Number(data.longitude), Number(data.latitude)]);
         setReceivedPin({
             longitude: Number(data.longitude),
@@ -160,6 +155,7 @@ export default function Report({ match, history }) {
             who: data.who,
             what: data.what,
             when: data.when,
+            wherehappened: data.wherehappened,
             longitude: Number(data.longitude),
             latitude: Number(data.latitude),
             why: data.why,
@@ -171,7 +167,7 @@ export default function Report({ match, history }) {
 
     return (
         <div className="reportContainer">
-            <h1>Report component</h1>
+            <h1 onClick={() => console.log(fields)}>Report component</h1>
             <form>
                 <label htmlFor="who">Who:</label>
                 <input
@@ -206,9 +202,13 @@ export default function Report({ match, history }) {
                         onClick={onInput}
                         name="where"
                         value={searchTerm}
-                        onInput={onInput}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={(e) => handleKeyPress(e)}
+                        onInput={() => {
+                            onInput;
+                        }}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            handleInputs(e);
+                        }}
                     />
                     {searchHtml}
                 </div>
@@ -223,6 +223,7 @@ export default function Report({ match, history }) {
                 {fields.who &&
                 fields.what &&
                 fields.when &&
+                fields.where &&
                 fields.longitude &&
                 fields.latitude &&
                 fields.why ? (

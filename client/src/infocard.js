@@ -1,4 +1,3 @@
-import axios from "axios";
 import { socket } from "./socket.js";
 
 export default function InfoCard({ drafts, showButton, handleEdit }) {
@@ -15,8 +14,9 @@ export default function InfoCard({ drafts, showButton, handleEdit }) {
                     <div>Who: {draft.who}</div>
                     <div>What: {draft.what}</div>
                     <div>When: {draft.whenhappened}</div>
+                    <div>Where: {draft.wherehappened}</div>
                     <div>
-                        Where: {draft.longitude}, {draft.latitude}
+                        Exact location: {draft.longitude}, {draft.latitude}
                     </div>
                     <div>Why: {draft.why}</div>
                     {showButton && (
@@ -30,6 +30,7 @@ export default function InfoCard({ drafts, showButton, handleEdit }) {
                                         id: draft.id,
                                         who: draft.who,
                                         what: draft.what,
+                                        wherehappened: draft.wherehappened,
                                         when: draft.whenhappened,
                                         longitude: draft.longitude,
                                         latitude: draft.latitude,
