@@ -7,6 +7,8 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { socket } from "./socket.js";
+import TextField from "@material-ui/core/TextField";
+import moment from "moment";
 
 export default function Report({ match, history }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -17,6 +19,7 @@ export default function Report({ match, history }) {
     const [location, setLocation] = useState(false);
     const [receivedPin, setReceivedPin] = useState({});
     const [draftId, setDraftId] = useState();
+    const [currentDateString, setCurrentDate] = useState();
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
@@ -65,7 +68,7 @@ export default function Report({ match, history }) {
             socket.emit("newDraft", fields);
             who.current.value = "";
             what.current.value = "";
-            when.current.value = "";
+            // when.current.value = "";
             where.current.value = "";
             why.current.value = "";
             setSearchTerm("");
@@ -75,7 +78,7 @@ export default function Report({ match, history }) {
             socket.emit("editDraft", fields);
             who.current.value = "";
             what.current.value = "";
-            when.current.value = "";
+            // when.current.value = "";
             where.current.value = "";
             why.current.value = "";
             setSearchTerm("");
@@ -142,7 +145,7 @@ export default function Report({ match, history }) {
         e.preventDefault();
         who.current.value = data.who;
         what.current.value = data.what;
-        when.current.value = data.when;
+        setCurrentDate(data.when);
         why.current.value = data.why;
         where.current.value = data.wherehappened;
         setCenter([Number(data.longitude), Number(data.latitude)]);
@@ -165,13 +168,23 @@ export default function Report({ match, history }) {
         socket.emit("deleteDraft", data.id, true);
     };
 
+    useEffect(() => {
+        setCurrentDate(
+            moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
+        );
+        setFields({
+            ...fields,
+            when: currentDateString,
+        });
+    }, [currentDateString]);
+
     if (!drafts) {
         return null;
     }
 
     return (
         <div className="reportContainer">
-            <h1>Report component</h1>
+            <h1 onClick={() => console.log(when)}>Report component</h1>
             <form>
                 <label htmlFor="who">Who:</label>
                 <input
@@ -189,16 +202,29 @@ export default function Report({ match, history }) {
                         handleInputs(e);
                     }}
                 />
-                <label htmlFor="when">When:</label>
+                <TextField
+                    name="when"
+                    ref={when}
+                    id="datetime-local"
+                    label="When"
+                    type="datetime-local"
+                    defaultValue={currentDateString}
+                    onChange={(e) => handleInputs(e)}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                {/* <label htmlFor="when">When:</label>
                 <input
                     name="when"
                     ref={when}
                     onChange={(e) => {
                         handleInputs(e);
                     }}
-                />
+                /> */}
 
                 <label htmlFor="where">Where:</label>
+
                 <div className="whereContainer">
                     <input
                         autoComplete="off"
@@ -226,7 +252,6 @@ export default function Report({ match, history }) {
                 />
                 {fields.who &&
                 fields.what &&
-                fields.when &&
                 fields.where &&
                 fields.longitude &&
                 fields.latitude &&
