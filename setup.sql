@@ -45,3 +45,5 @@ DROP TABLE IF EXISTS report;
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );   
 
+
+-- INSERT INTO organizations (name, email) VALUES ('Amnesty', 'amnesty@amnesty.org');

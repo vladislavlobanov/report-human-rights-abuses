@@ -167,7 +167,7 @@ export default function Report({ match, history }) {
 
     return (
         <div className="reportContainer">
-            <h1 onClick={() => console.log(fields)}>Report component</h1>
+            <h1>Report component</h1>
             <form>
                 <label htmlFor="who">Who:</label>
                 <input
@@ -229,22 +229,22 @@ export default function Report({ match, history }) {
                 fields.why ? (
                     <>
                         <button onClick={(e) => handleMore(e)}>Save</button>
-                        <button>Submit</button>
                     </>
                 ) : (
-                    <>
-                        <button onClick={(e) => handleMore(e)} disabled>
-                            Save
-                        </button>
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                history.replace("/finalize");
-                            }}
-                        >
-                            Procced to submission
-                        </button>
-                    </>
+                    <button disabled>Save</button>
+                )}
+
+                {drafts.length > 0 ? (
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            history.push("/finalize");
+                        }}
+                    >
+                        Procced to submission
+                    </button>
+                ) : (
+                    <button disabled>Procced to submission</button>
                 )}
             </form>
             <div className="map">
