@@ -86,6 +86,10 @@ export default function SendDrafts({ userId }) {
         setSelectedOption(selectedOption);
     };
 
+    if (!drafts) {
+        return null;
+    }
+
     const mainHtml = (
         <>
             {drafts.length > 0 && (
@@ -142,10 +146,6 @@ export default function SendDrafts({ userId }) {
             {drafts.length == 0 && <p>You have no cases to submit</p>}
         </>
     );
-
-    if (!drafts) {
-        return null;
-    }
 
     return (
         <>

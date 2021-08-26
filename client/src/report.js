@@ -165,6 +165,10 @@ export default function Report({ match, history }) {
         socket.emit("deleteDraft", data.id, true);
     };
 
+    if (!drafts) {
+        return null;
+    }
+
     return (
         <div className="reportContainer">
             <h1>Report component</h1>
