@@ -43,7 +43,7 @@ module.exports.insertReport = (
             userId,
             who,
             what,
-            whenHappened,
+            whenHappened + ":00'",
             why,
             longitude,
             latitude,
@@ -54,14 +54,17 @@ module.exports.insertReport = (
 
 module.exports.getDrafts = (userId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (user_id = $1 and (linkId IS NULL));`,
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (user_id = $1 and (linkId IS NULL))
+        ORDER BY whenHappened DESC;
+        `,
         [userId]
     );
 };
 
 module.exports.getDraftsSent = (reportId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (linkId = $1);`,
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (linkId = $1)
+        ORDER BY whenHappened DESC`,
         [reportId]
     );
 };
@@ -157,7 +160,7 @@ module.exports.editDraft = (
             draftId,
             who,
             what,
-            whenHappened,
+            whenHappened + ":00'",
             why,
             longitude,
             latitude,

@@ -6,6 +6,9 @@ export default function draftReducer(state = null, action) {
     }
     if (action.type === "drafts/newReceived") {
         state = [...action.payload.draft, ...state];
+        state = state.sort(
+            (a, b) => new Date(b.whenhappened) - new Date(a.whenhappened)
+        );
     }
 
     if (action.type === "drafts/deleteDraft") {

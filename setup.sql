@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS report;
      user_id INT REFERENCES users(id) ON DELETE CASCADE NOT NULL, 
      who TEXT NOT NULL,
      what TEXT NOT NULL,
-     whenHappened TEXT NOT NULL,
+     whenHappened TIMESTAMP NOT NULL,
      why TEXT NOT NULL,
      whereHappened TEXT NOT NULL,
      longitude TEXT NOT NULL,

@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { socket } from "./socket.js";
 import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import moment from "moment";
+
+const options = ["Option 1", "Option 2"];
 
 export default function Report({ match, history }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +23,8 @@ export default function Report({ match, history }) {
     const [receivedPin, setReceivedPin] = useState({});
     const [draftId, setDraftId] = useState();
     const [currentDateString, setCurrentDate] = useState();
+    const [inputValue, setInputValue] = useState("");
+    const [value, setValue] = useState("");
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
@@ -37,24 +42,6 @@ export default function Report({ match, history }) {
         setPin({ longitude: longitude, latitude: latitude });
     };
 
-    async function onInput(event) {
-        if (event.target.value) {
-            let abort;
-            (async () => {
-                const query = event.target.value;
-                const response = await geocoder
-                    .forwardGeocode({ query, limit: 5 })
-                    .send();
-                if (!abort) {
-                    setSearchData(response.body.features);
-                }
-            })();
-            return () => {
-                abort = true;
-            };
-        }
-    }
-
     const who = useRef();
     const what = useRef();
     const when = useRef();
@@ -69,7 +56,7 @@ export default function Report({ match, history }) {
             who.current.value = "";
             what.current.value = "";
             // when.current.value = "";
-            where.current.value = "";
+
             why.current.value = "";
             setSearchTerm("");
             setLocation(!location);
@@ -79,7 +66,7 @@ export default function Report({ match, history }) {
             who.current.value = "";
             what.current.value = "";
             // when.current.value = "";
-            where.current.value = "";
+
             why.current.value = "";
             setSearchTerm("");
             setLocation(!location);
@@ -147,7 +134,7 @@ export default function Report({ match, history }) {
         what.current.value = data.what;
         setCurrentDate(data.when);
         why.current.value = data.why;
-        where.current.value = data.wherehappened;
+        setSearchTerm(data.wherehappened);
         setCenter([Number(data.longitude), Number(data.latitude)]);
         setReceivedPin({
             longitude: Number(data.longitude),
@@ -158,7 +145,7 @@ export default function Report({ match, history }) {
             who: data.who,
             what: data.what,
             when: data.when,
-            wherehappened: data.wherehappened,
+            where: data.wherehappened,
             longitude: Number(data.longitude),
             latitude: Number(data.latitude),
             why: data.why,
@@ -178,13 +165,31 @@ export default function Report({ match, history }) {
         });
     }, [currentDateString]);
 
+    async function onInput(value) {
+        if (value) {
+            let abort;
+            (async () => {
+                const query = value;
+                const response = await geocoder
+                    .forwardGeocode({ query, limit: 5 })
+                    .send();
+                if (!abort) {
+                    setSearchData(response.body.features);
+                }
+            })();
+            return () => {
+                abort = true;
+            };
+        }
+    }
+
     if (!drafts) {
         return null;
     }
 
     return (
         <div className="reportContainer">
-            <h1 onClick={() => console.log(when)}>Report component</h1>
+            <h1 onClick={() => console.log(fields)}>Report component</h1>
             <form>
                 <label htmlFor="who">Who:</label>
                 <input
@@ -222,26 +227,78 @@ export default function Report({ match, history }) {
                         handleInputs(e);
                     }}
                 /> */}
-
                 <label htmlFor="where">Where:</label>
+                <div>{`Select: ${value !== null ? `'${value}'` : "null"}`}</div>
+                <div>{`Searchterm: '${searchTerm}'`}</div>
+                <Autocomplete
+                    id="free-solo-demo"
+                    freeSolo
+                    // options={options}
+                    options={searchData.map(
+                        (searchData) => searchData.place_name
+                    )}
+                    inputValue={searchTerm}
+                    onInputChange={(e, value) => {
+                        setSearchTerm(value);
+                        onInput(searchTerm);
+                        setFields({
+                            ...fields,
+                            where: value,
+                            ...pin,
+                        });
+                    }}
+                    value={value}
+                    onChange={(event, newValue) => {
+                        setValue(newValue);
+                        if (
+                            event.target.getAttribute("data-option-index") !=
+                            null
+                        ) {
+                            setCenter(
+                                searchData[
+                                    event.target.getAttribute(
+                                        "data-option-index"
+                                    )
+                                ].center
+                            );
+                            setFields({
+                                ...fields,
+                                where: searchData[
+                                    event.target.getAttribute(
+                                        "data-option-index"
+                                    )
+                                ].place_name,
+                                ...pin,
+                            });
+                        }
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="freeSolo"
+                            margin="normal"
+                            variant="outlined"
+                        />
+                    )}
+                />
 
-                <div className="whereContainer">
+                {/* <div className="whereContainer">
                     <input
                         autoComplete="off"
                         ref={where}
-                        onClick={onInput}
+                        // onClick={onInput}
                         name="where"
                         value={searchTerm}
-                        onInput={() => {
-                            onInput;
-                        }}
+                        // onInput={() => {
+                        //     onInput;
+                        // }}
                         onChange={(e) => {
                             setSearchTerm(e.target.value);
-                            handleInputs(e);
+                            // handleInputs(e);
                         }}
                     />
                     {searchHtml}
-                </div>
+                </div> */}
                 <label htmlFor="why">Why:</label>
                 <input
                     ref={why}

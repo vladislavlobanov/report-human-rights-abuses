@@ -99,7 +99,7 @@ export default function Feed() {
                                     </div>
                                 </div>
                             ))}
-                            {!hideMoreButton && (
+                            {!hideMoreButton && headlines.length > 2 && (
                                 <button onClick={() => moreHeadlines()}>
                                     More
                                 </button>
