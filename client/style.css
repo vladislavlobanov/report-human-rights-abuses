@@ -282,3 +282,7 @@ header {
     width: 300px;
     text-align: center;
 }
+
+.searchFieldWrapper {
+    width: 500px;
+}

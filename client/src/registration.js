@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Component } from "react";
 import axios from "axios";
+import TextField from "@material-ui/core/TextField";
 
 export class Registration extends Component {
     constructor() {
@@ -53,19 +54,52 @@ export class Registration extends Component {
                     )}
 
                     <form className="formRegContainter">
-                        <label htmlFor="first" onChange={this.handleChange}>
-                            First Name
-                        </label>
-                        <input name="first" onChange={this.handleChange} />
-                        <label htmlFor="last">Last Name</label>
-                        <input name="last" onChange={this.handleChange} />
-                        <label htmlFor="email">Email</label>
-                        <input name="email" onChange={this.handleChange} />
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            name="password"
+                        <TextField
+                            variant="outlined"
+                            name="first"
+                            label="First name"
                             onChange={this.handleChange}
+                            inputProps={{
+                                style: {
+                                    backgroundColor: "white",
+                                },
+                            }}
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            name="last"
+                            label="Last name"
+                            onChange={this.handleChange}
+                            inputProps={{
+                                style: {
+                                    backgroundColor: "white",
+                                },
+                            }}
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            name="email"
+                            label="Email"
+                            onChange={this.handleChange}
+                            inputProps={{
+                                style: {
+                                    backgroundColor: "white",
+                                },
+                            }}
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            name="password"
+                            label="Password"
+                            onChange={this.handleChange}
+                            inputProps={{
+                                style: {
+                                    backgroundColor: "white",
+                                },
+                            }}
                         />
                         <button onClick={(e) => this.handleSubmit(e)}>
                             Register

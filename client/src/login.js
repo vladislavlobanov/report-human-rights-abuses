@@ -1,6 +1,7 @@
 import { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
 
 export class Login extends Component {
     constructor() {
@@ -53,14 +54,39 @@ export class Login extends Component {
                         </h2>
                     )}
                     <form className="formRegContainter">
-                        <label htmlFor="email">Email</label>
-                        <input name="email" onChange={this.handleChange} />
-                        <label htmlFor="password" onChange={this.handleChange}>
+                        {/* <label htmlFor="email">Email</label>
+                        <input name="email" onChange={this.handleChange} /> */}
+
+                        <TextField
+                            variant="outlined"
+                            name="email"
+                            label="Email"
+                            onChange={this.handleChange}
+                            inputProps={{
+                                style: {
+                                    backgroundColor: "white",
+                                },
+                            }}
+                        />
+
+                        {/* <label htmlFor="password" onChange={this.handleChange}>
                             Password
                         </label>
                         <input
                             type="password"
                             name="password"
+                            onChange={this.handleChange}
+                        /> */}
+                        <TextField
+                            variant="outlined"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            inputProps={{
+                                style: {
+                                    backgroundColor: "white",
+                                },
+                            }}
                             onChange={this.handleChange}
                         />
                         <button onClick={(e) => this.handleSubmit(e)}>

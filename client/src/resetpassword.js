@@ -1,6 +1,7 @@
 import { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
 
 export class ResetPassword extends Component {
     constructor() {
@@ -8,10 +9,11 @@ export class ResetPassword extends Component {
         this.state = {
             error: false,
             errMessage: "",
-            view: 3,
+            view: 1,
         };
         this.handleChange = this.handleChange.bind(this);
     }
+
     handleChange({ target }) {
         console.log("which input is running handleChange?", target.name);
         console.log("value the user typed:", target.value);
@@ -111,11 +113,16 @@ export class ResetPassword extends Component {
                                     you registered
                                 </div>
 
-                                <label htmlFor="email">Email</label>
-                                <input
+                                <TextField
+                                    variant="outlined"
                                     name="email"
+                                    label="Email"
                                     onChange={this.handleChange}
-                                    key="email"
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
                                 />
 
                                 <button onClick={(e) => this.handleSubmit(e)}>
@@ -140,21 +147,28 @@ export class ResetPassword extends Component {
                             <form className="formRegContainter">
                                 <div>Please enter the code you received</div>
 
-                                <label htmlFor="code">Code</label>
-                                <input
+                                <TextField
+                                    variant="outlined"
                                     name="code"
+                                    label="Code"
                                     onChange={this.handleChange}
-                                    key="code"
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
                                 />
 
-                                <div>Please enter a new password</div>
-
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    type="password"
+                                <TextField
+                                    variant="outlined"
                                     name="password"
+                                    label="Password"
                                     onChange={this.handleChange}
-                                    key="password"
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
                                 />
 
                                 <button onClick={(e) => this.handleSubmit(e)}>
