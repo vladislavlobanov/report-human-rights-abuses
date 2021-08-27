@@ -196,7 +196,6 @@ h2 {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: peachpuff;
     padding-left: 10px;
     padding-right: 10px;
     align-items: center;
@@ -280,7 +279,9 @@ textarea {
 } */
 
 .h2Padding {
-    padding-left: 10px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .codeForm {
@@ -336,6 +337,14 @@ header h1 {
 
 .belowHeaderCont a:hover {
     color: #000000fa;
+}
+
+.belowHeaderCont h2 {
+    text-transform: uppercase;
+}
+
+.belowHeaderCont {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .headerRight a {
@@ -402,7 +411,7 @@ header h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
     width: 300px;
     text-align: center;
 }

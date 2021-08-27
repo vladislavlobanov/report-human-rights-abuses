@@ -1,12 +1,16 @@
 import { socket } from "./socket.js";
 import SmallMap from "./smallmap";
 const secrets = require("../../server/secrets.json");
+import { Link } from "react-router-dom";
+
+import MailTo from "./mailto";
 
 export default function InfoCard({
     drafts,
     showButton,
     handleEdit,
     standalone,
+    userDetails,
 }) {
     const handleDelete = (e, draftId) => {
         e.preventDefault();
@@ -34,6 +38,39 @@ export default function InfoCard({
                 {drafts.length == 0 && (
                     <div>You have not submitted any drafts</div>
                 )}
+                {standalone && (
+                    <>
+                        {userDetails.map((headline, index) => (
+                            <div key={index} className="feedCard">
+                                <div>
+                                    Published by:{" "}
+                                    <Link to={`/case/${headline.id}`}>
+                                        {headline.first} {headline.last}
+                                    </Link>
+                                </div>
+                                <div>
+                                    Contact: {""}
+                                    <MailTo
+                                        label={headline.email}
+                                        mailto={"mailto:" + headline.email}
+                                    />
+                                </div>
+                                <div>
+                                    Date:{" "}
+                                    <span>
+                                        {dateConverter(headline.timestamp)}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="makeBold">
+                                        {headline.headline}{" "}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}{" "}
+                    </>
+                )}
+
                 {drafts.map((draft) => (
                     <div key={draft.id} className="caseCard">
                         <div

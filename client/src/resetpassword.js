@@ -119,6 +119,7 @@ export class ResetPassword extends Component {
                                             variant="outlined"
                                             name="email"
                                             label="Email"
+                                            key="email"
                                             onChange={this.handleChange}
                                             inputProps={{
                                                 style: {
@@ -163,6 +164,7 @@ export class ResetPassword extends Component {
                                             variant="outlined"
                                             name="code"
                                             label="Code"
+                                            key="code"
                                             onChange={this.handleChange}
                                             inputProps={{
                                                 style: {
@@ -170,11 +172,13 @@ export class ResetPassword extends Component {
                                                 },
                                             }}
                                         />
+                                        <div>Please enter a new password</div>
 
                                         <TextField
                                             variant="outlined"
                                             name="password"
-                                            label="Password"
+                                            label="New password"
+                                            key="password"
                                             onChange={this.handleChange}
                                             inputProps={{
                                                 style: {

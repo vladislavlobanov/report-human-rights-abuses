@@ -111,6 +111,15 @@ io.on("connection", async function (socket) {
         socket.emit("lastHeadlinesEmit", data);
     });
 
+    socket.on("myCases", (data) => {
+        socket.emit("myCasesEmit", data);
+    });
+
+    socket.on("myNewCase", async (data) => {
+        const { data: dataRes } = await db.getOneHeadlineMy(data.id);
+        socket.emit("myNewCaseEmit", dataRes);
+    });
+
     socket.on("newSet", (data) => {
         io.emit("updateHeadlinesWNewSet", data);
     });

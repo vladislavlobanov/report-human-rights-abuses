@@ -63,7 +63,7 @@ module.exports.getDrafts = (userId) => {
 
 module.exports.getDraftsSent = (reportId) => {
     return db.query(
-        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened FROM report WHERE (linkId = $1)
+        `SELECT id, who, what, whenHappened, why, longitude, latitude, timestamp, wherehappened, user_id FROM report WHERE (linkId = $1)
         ORDER BY whenHappened DESC`,
         [reportId]
     );
@@ -132,6 +132,42 @@ module.exports.getMoreHeadlines = (id) => {
         LIMIT 2;
     `,
         [id]
+    );
+};
+
+module.exports.getOneHeadline = (caseID) => {
+    return db.query(
+        `
+        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email
+        FROM links
+        JOIN users ON users.id = links.user_id
+        WHERE (links.id = $1);
+    `,
+        [caseID]
+    );
+};
+
+module.exports.getMyHeadLines = (userId) => {
+    return db.query(
+        `
+        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email, links.code, links.publicOrNot
+        FROM links
+        JOIN users ON users.id = links.user_id
+        WHERE (links.user_id = $1);
+    `,
+        [userId]
+    );
+};
+
+module.exports.getOneHeadlineMy = (linkId) => {
+    return db.query(
+        `
+        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email, links.code, links.publicOrNot
+        FROM links
+        JOIN users ON users.id = links.user_id
+        WHERE (links.id = $1);
+    `,
+        [linkId]
     );
 };
 

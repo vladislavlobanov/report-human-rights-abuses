@@ -7,14 +7,24 @@ import {
     updatedSetHeadlinesReceived,
 } from "./redux/headlines/slice.js";
 
+import { casesReceived, caseReceived } from "./redux/cases/slice.js";
+
 export const init = (store) => {
     if (!socket) {
         socket = io.connect();
     }
 
     socket.on("lastHeadlinesEmit", (data) => {
-        console.log(data);
         store.dispatch(headlinesReceived(data));
+    });
+
+    socket.on("myCasesEmit", (data) => {
+        console.log(data);
+        store.dispatch(casesReceived(data));
+    });
+
+    socket.on("myNewCaseEmit", (data) => {
+        store.dispatch(caseReceived([data]));
     });
 
     socket.on("updateHeadlines", (data) => {

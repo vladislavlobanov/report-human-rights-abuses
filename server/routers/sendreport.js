@@ -75,6 +75,24 @@ router.get("/getorganizations/", async (req, res) => {
     }
 });
 
+router.get("/getuserinfo/", async (req, res) => {
+    try {
+        const results = await db.getOneHeadline(req.query.caseId);
+        res.json(results.rows);
+    } catch (err) {
+        console.log("Error in get /getuserinfo/", err);
+    }
+});
+
+router.get("/getmyheadlines/", async (req, res) => {
+    try {
+        const results = await db.getMyHeadLines(req.session.userId);
+        res.json(results.rows);
+    } catch (err) {
+        console.log("Error in get /getuserinfo/", err);
+    }
+});
+
 router.post("/deletedraft/", async (req, res) => {
     try {
         await db.deleteDraft(req.body.id);

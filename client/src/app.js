@@ -7,6 +7,7 @@ import SendDrafts from "./senddrafts";
 import CaseProfile from "./caseProfile";
 import Feed from "./feed";
 import Search from "./search";
+import MyCases from "./mycases";
 import { Link } from "react-router-dom";
 
 export default class App extends Component {
@@ -43,7 +44,9 @@ export default class App extends Component {
                         </div>
                         <div className="headerRight">
                             <Link to="/draft">Drafts</Link>
+                            <Link to="/mycases">Submitted Cases</Link>
                             <Link to="/search">Search Cases</Link>
+
                             <Link
                                 to={``}
                                 onClick={async (e) => {
@@ -63,6 +66,7 @@ export default class App extends Component {
                         <Route exact path="/" component={Feed} />
 
                         <Route exact path="/search" component={Search} />
+                        <Route exact path="/mycases" component={MyCases} />
                         <Route
                             path="/draft"
                             render={(props) => (

@@ -6,6 +6,7 @@ import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core";
 
 export default function SendDrafts({ userId }) {
     const [headline, setHeadline] = useState();
@@ -14,6 +15,17 @@ export default function SendDrafts({ userId }) {
     const [options, setOptions] = useState();
     const [submitVisible, setSubmit] = useState(false);
     const [showSuccess, setSuccess] = useState(false);
+
+    const useStyles = makeStyles((theme) => ({
+        input: {
+            backgroundColor: "white",
+            borderRadius: "inherit",
+        },
+        inputRoot: {
+            backgroundColor: "white",
+        },
+    }));
+    const classes = useStyles();
 
     useEffect(async () => {
         try {
@@ -73,6 +85,10 @@ export default function SendDrafts({ userId }) {
                     last: data.last,
                     email: data.email,
                 });
+
+                socket.emit("newCase", {
+                    id: data.linkId,
+                });
             }
             setSuccess(true);
         } catch (err) {
@@ -129,8 +145,8 @@ export default function SendDrafts({ userId }) {
                                 multiple
                                 options={options}
                                 getOptionLabel={(option) => option.label}
-                                defaultValue={selectedOption || ""}
                                 filterSelectedOptions
+                                classes={classes}
                                 onChange={(event, value) => handleSelect(value)}
                                 renderInput={(params) => (
                                     <TextField
@@ -177,7 +193,7 @@ export default function SendDrafts({ userId }) {
 
     return (
         <div className="sendDrafts">
-            <h2>Send drafts</h2>
+            <h2 className="h2Padding">Send drafts</h2>
 
             {!showSuccess && mainHtml}
             {showSuccess && <p>You report has been successfully submitted!</p>}

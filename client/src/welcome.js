@@ -16,9 +16,11 @@ export default function Welcome() {
                     </div>
                     <div className="headerRight"></div>
                 </header>
-                <Route exact path="/" component={Registration} />
-                <Route path="/login" component={Login} />
-                <Route path="/password-reset" component={ResetPassword} />
+                <div className="belowHeaderCont">
+                    <Route exact path="/" component={Registration} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/password-reset" component={ResetPassword} />
+                </div>
             </BrowserRouter>
         </>
     );

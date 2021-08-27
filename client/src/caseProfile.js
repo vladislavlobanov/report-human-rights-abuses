@@ -10,6 +10,7 @@ export default function CaseProfile({ match, history, standalone }) {
     const [stories, setStories] = useState([]);
     const [publicOrNot, setPublicOrNot] = useState();
     const [caseId, setCaseId] = useState();
+    const [userInfo, setUserInfo] = useState([]);
 
     const useStyles = makeStyles((theme) => ({
         input: {
@@ -33,6 +34,15 @@ export default function CaseProfile({ match, history, standalone }) {
                     const { data: results } = await axios.get("/getreport/", {
                         params: { caseId: match.params.id },
                     });
+
+                    const { data: userInfo } = await axios.get(
+                        "/getuserinfo/",
+                        {
+                            params: { caseId: match.params.id },
+                        }
+                    );
+
+                    setUserInfo(userInfo);
                     setStories(results);
                 } else {
                     if (data.id == match.params.id) {
@@ -122,6 +132,7 @@ export default function CaseProfile({ match, history, standalone }) {
                             drafts={stories}
                             showButton={false}
                             standalone={true}
+                            userDetails={userInfo}
                         />
                     )}
                 </>
