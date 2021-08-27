@@ -7,6 +7,7 @@ import SendDrafts from "./senddrafts";
 import CaseProfile from "./caseProfile";
 import Feed from "./feed";
 import Search from "./search";
+import { Link } from "react-router-dom";
 
 export default class App extends Component {
     constructor(props) {
@@ -36,9 +37,27 @@ export default class App extends Component {
                 <>
                     <header>
                         <div className="logo">
-                            <h1>UNHEARD VOICES</h1>
+                            <Link to="/">
+                                <h1>UNHEARD VOICES</h1>
+                            </Link>
                         </div>
-                        <div className="headerRight"></div>
+                        <div className="headerRight">
+                            <Link to="/draft">Drafts</Link>
+                            <Link to="/search">Search Cases</Link>
+                            <Link
+                                to={``}
+                                onClick={async (e) => {
+                                    e.preventDefault();
+                                    const res = await axios.get("/api/logout/");
+
+                                    if (res.status == 200) {
+                                        location.replace("/");
+                                    }
+                                }}
+                            >
+                                Log out
+                            </Link>
+                        </div>
                     </header>
 
                     <Route exact path="/" component={Feed} />

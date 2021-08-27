@@ -43,38 +43,43 @@ export class Registration extends Component {
 
     render() {
         return (
-            <>
-                <h1>Registration</h1>
-                {this.state.error && (
-                    <h2 style={{ color: "red" }}>{this.state.errMessage}</h2>
-                )}
-                <form>
-                    <label htmlFor="first" onChange={this.handleChange}>
-                        First Name
-                    </label>
-                    <input name="first" onChange={this.handleChange} />
-                    <label htmlFor="last">Last Name</label>
-                    <input name="last" onChange={this.handleChange} />
-                    <label htmlFor="email">Email</label>
-                    <input name="email" onChange={this.handleChange} />
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        onChange={this.handleChange}
-                    />
-                    <button onClick={(e) => this.handleSubmit(e)}>
-                        Register
-                    </button>
-                </form>
-                <div>
-                    Are you already registered? Click{" "}
-                    <Link className="chatName" to="/login">
-                        here
-                    </Link>{" "}
-                    to log in!
+            <div className="register">
+                <div className="regForm">
+                    <h1>Registration</h1>
+                    {this.state.error && (
+                        <h2 style={{ color: "red" }}>
+                            {this.state.errMessage}
+                        </h2>
+                    )}
+
+                    <form className="formRegContainter">
+                        <label htmlFor="first" onChange={this.handleChange}>
+                            First Name
+                        </label>
+                        <input name="first" onChange={this.handleChange} />
+                        <label htmlFor="last">Last Name</label>
+                        <input name="last" onChange={this.handleChange} />
+                        <label htmlFor="email">Email</label>
+                        <input name="email" onChange={this.handleChange} />
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            onChange={this.handleChange}
+                        />
+                        <button onClick={(e) => this.handleSubmit(e)}>
+                            Register
+                        </button>
+                    </form>
+                    <div>
+                        Are you already registered? Click{" "}
+                        <Link className="chatName" to="/login">
+                            here
+                        </Link>{" "}
+                        to log in!
+                    </div>
                 </div>
-            </>
+            </div>
         );
     }
 }

@@ -16,7 +16,7 @@ const ses = new aws.SES({
 exports.sendEmail = function (recipient, link, code) {
     return ses
         .sendEmail({
-            Source: "Report HRA" + "<" + secrets.email + ">",
+            Source: "Unheard Voices" + "<" + secrets.email + ">",
             Destination: {
                 ToAddresses: [recipient],
             },
@@ -30,6 +30,32 @@ exports.sendEmail = function (recipient, link, code) {
                 },
                 Subject: {
                     Data: "New case for your to review from Report HRA",
+                },
+            },
+        })
+        .promise()
+        .then(() => console.log("it worked!"))
+        .catch((err) => console.log(err));
+};
+
+exports.sendReset = function (recipient, code) {
+    return ses
+        .sendEmail({
+            Source: "Unheard Voices " + "<" + secrets.email + ">",
+            Destination: {
+                ToAddresses: [recipient],
+            },
+            Message: {
+                Body: {
+                    Text: {
+                        Data:
+                            "Please use this code: " +
+                            code +
+                            " to reset your password",
+                    },
+                },
+                Subject: {
+                    Data: "Password Reset",
                 },
             },
         })
