@@ -311,6 +311,7 @@ header a:active {
 header {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     height: 100px;
     background-color: #a19882;
 }
@@ -420,7 +421,41 @@ header h1 {
     width: 500px;
 }
 
+.red {
+    color: red;
+}
+
+.makeSpace {
+    height: 10px;
+}
 @media screen and (max-width: 1020px) {
+    header {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: fit-content;
+        align-content: center;
+        background-color: #a19882;
+        padding-left: 20px;
+        padding-bottom: 20px;
+    }
+
+    .logo a {
+        width: 100%;
+    }
+
+    .headerRight {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .logo h1 {
+        text-align: center;
+    }
     .wrapper {
         height: fit-content;
     }

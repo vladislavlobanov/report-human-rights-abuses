@@ -117,7 +117,7 @@ module.exports.getLastTenHeadlines = () => {
         JOIN users ON users.id = links.user_id
         WHERE (publicOrNot = TRUE)
         ORDER BY timestamp DESC
-        LIMIT 2;
+        LIMIT 3;
     `);
 };
 
@@ -129,7 +129,7 @@ module.exports.getMoreHeadlines = (id) => {
         JOIN users ON users.id = links.user_id
         WHERE (publicOrNot = TRUE AND links.id < $1) 
         ORDER BY timestamp DESC
-        LIMIT 2;
+        LIMIT 3;
     `,
         [id]
     );
@@ -150,7 +150,7 @@ module.exports.getOneHeadline = (caseID) => {
 module.exports.getMyHeadLines = (userId) => {
     return db.query(
         `
-        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email, links.code, links.publicOrNot
+        SELECT links.id, links.link, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email, links.code, links.publicOrNot
         FROM links
         JOIN users ON users.id = links.user_id
         WHERE (links.user_id = $1);
@@ -162,7 +162,7 @@ module.exports.getMyHeadLines = (userId) => {
 module.exports.getOneHeadlineMy = (linkId) => {
     return db.query(
         `
-        SELECT links.id, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email, links.code, links.publicOrNot
+        SELECT links.id, links.link, links.user_id, links.headline, links.timestamp, users.first, users.last, users.email, links.code, links.publicOrNot
         FROM links
         JOIN users ON users.id = links.user_id
         WHERE (links.id = $1);
