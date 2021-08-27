@@ -64,12 +64,14 @@ export default function CaseProfile({ match, history, standalone }) {
             {isValid && (
                 <>
                     {!stories.length && !publicOrNot && (
-                        <>
-                            <h3 onClick={() => console.log()}>
-                                This is a secret page
-                            </h3>
-                            <form>
-                                <label htmlFor="code">Enter code</label>
+                        <div className="pageCode">
+                            <form className="codeForm">
+                                <h2 onClick={() => console.log()}>
+                                    This case is only accessible with a code
+                                </h2>
+                                <label htmlFor="code">
+                                    Please enter the code
+                                </label>
                                 <input
                                     name="code"
                                     onChange={(e) =>
@@ -84,7 +86,7 @@ export default function CaseProfile({ match, history, standalone }) {
                                     Submit
                                 </button>
                             </form>
-                        </>
+                        </div>
                     )}
 
                     {stories.length > 0 && (

@@ -34,7 +34,13 @@ export default class App extends Component {
         return (
             <BrowserRouter>
                 <>
-                    <h1>UNHEARD VOICES</h1>
+                    <header>
+                        <div className="logo">
+                            <h1>UNHEARD VOICES</h1>
+                        </div>
+                        <div className="headerRight"></div>
+                    </header>
+
                     <Route exact path="/" component={Feed} />
                     <Route exact path="/search" component={Search} />
                     <Route
