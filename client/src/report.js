@@ -74,7 +74,16 @@ export default function Report({ match, history }) {
             setCurrentDate(
                 moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
             );
-            setFields({ when: currentDateString });
+            setValue("");
+            setPin("");
+            setFields({
+                when:
+                    moment().format("YYYY-MM-DD") +
+                    `T` +
+                    moment().format("HH:mm"),
+                longitude: "",
+                latitude: "",
+            });
         } else {
             socket.emit("editDraft", fields);
             // setCurrentDate(
@@ -87,7 +96,16 @@ export default function Report({ match, history }) {
             setCurrentDate(
                 moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
             );
-            setFields({ when: currentDateString });
+            setValue("");
+            setPin("");
+            setFields({
+                when:
+                    moment().format("YYYY-MM-DD") +
+                    `T` +
+                    moment().format("HH:mm"),
+                longitude: "",
+                latitude: "",
+            });
             setDraftId("");
         }
     };
@@ -338,6 +356,7 @@ export default function Report({ match, history }) {
                             value={value}
                             onChange={(event, newValue) => {
                                 setValue(newValue);
+
                                 if (
                                     event.target.getAttribute(
                                         "data-option-index"

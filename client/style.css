@@ -12,11 +12,14 @@ header {
 }
 
 .reportContainer {
-    background-color: peachpuff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
     display: flex;
-    min-height: 100vh;
+    min-height: calc(100% - 100px);
     flex-wrap: wrap;
     gap: 10px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .leftSide {
@@ -26,6 +29,7 @@ header {
     height: fit-content;
     padding-left: 10px;
     padding-right: 10px;
+    gap: 10px;
 }
 
 .inputs {
@@ -45,12 +49,17 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    gap: 5px;
 }
 
 .insideForm {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background-color: #e6ddc6a2;
+    border-radius: 5px;
+    border: 1px solid #dadadab9;
+    padding: 10px;
 }
 
 .mapWrapper {
@@ -93,11 +102,11 @@ button {
 }
 
 button:active {
-    background-color: #e6ddc6;
+    background-color: white;
 }
 
 button:hover {
-    background-color: #a19882;
+    background-color: #42413cfa;
 }
 
 button:disabled,
@@ -116,6 +125,7 @@ h2 {
     display: flex;
     flex-direction: column;
     width: 100%;
+    gap: 10px;
 }
 
 .caseDetailsAlone {
@@ -146,6 +156,10 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background-color: #e6ddc6a2;
+    border-radius: 5px;
+    border: 1px solid #dadadab9;
+    padding: 10px;
 }
 
 .fiveQuestions {
@@ -163,9 +177,13 @@ h2 {
 
 .wrapper {
     width: calc(100vw - 20px);
-    height: 100vh;
+    height: calc(100vh - 55px);
     overflow: scroll;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
 }
+
 #makePublic {
     width: 50px;
 }
@@ -307,6 +325,33 @@ header h1 {
     vertical-align: center;
 }
 
+.belowHeaderCont a,
+.belowHeaderCont a:hover,
+.belowHeaderCont a:focus,
+.belowHeaderCont a:active {
+    text-decoration: underline;
+    color: #42413cfa;
+    text-transform: uppercase;
+}
+
+.belowHeaderCont a:hover {
+    color: #000000fa;
+}
+
+.headerRight a {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: "Molengo", sans-serif;
+    background-color: #e6ddc6a2;
+    padding: 20px;
+}
+
+.headerRight a:hover {
+    background-color: #42413cfa;
+}
+
 .logo {
     display: flex;
     flex: 1;
@@ -364,4 +409,10 @@ header h1 {
 
 .searchFieldWrapper {
     width: 500px;
+}
+
+@media screen and (max-width: 1020px) {
+    .wrapper {
+        height: fit-content;
+    }
 }

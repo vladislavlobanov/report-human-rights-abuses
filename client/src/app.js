@@ -59,34 +59,35 @@ export default class App extends Component {
                             </Link>
                         </div>
                     </header>
+                    <div className="belowHeaderCont">
+                        <Route exact path="/" component={Feed} />
 
-                    <Route exact path="/" component={Feed} />
+                        <Route exact path="/search" component={Search} />
+                        <Route
+                            path="/draft"
+                            render={(props) => (
+                                <Report
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                />
+                            )}
+                        />
 
-                    <Route exact path="/search" component={Search} />
-                    <Route
-                        path="/draft"
-                        render={(props) => (
-                            <Report
-                                key={props.match.url}
-                                match={props.match}
-                                history={props.history}
-                            />
-                        )}
-                    />
-
-                    <Route
-                        path="/case/:id"
-                        render={(props) => (
-                            <CaseProfile
-                                key={props.match.url}
-                                match={props.match}
-                                history={props.history}
-                            />
-                        )}
-                    />
-                    <Route path="/finalize">
-                        <SendDrafts userId={this.state.userId} />
-                    </Route>
+                        <Route
+                            path="/case/:id"
+                            render={(props) => (
+                                <CaseProfile
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                />
+                            )}
+                        />
+                        <Route path="/finalize">
+                            <SendDrafts userId={this.state.userId} />
+                        </Route>
+                    </div>
                 </>
             </BrowserRouter>
         );

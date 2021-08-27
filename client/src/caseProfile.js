@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import InfoCard from "./infocard";
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core";
 
 export default function CaseProfile({ match, history, standalone }) {
     const [isValid, setValid] = useState();
@@ -8,6 +10,15 @@ export default function CaseProfile({ match, history, standalone }) {
     const [stories, setStories] = useState([]);
     const [publicOrNot, setPublicOrNot] = useState();
     const [caseId, setCaseId] = useState();
+
+    const useStyles = makeStyles((theme) => ({
+        input: {
+            backgroundColor: "white",
+            borderRadius: "inherit",
+            // width: "300px",
+        },
+    }));
+    const classes = useStyles();
 
     useEffect(async () => {
         try {
@@ -64,28 +75,45 @@ export default function CaseProfile({ match, history, standalone }) {
             {isValid && (
                 <>
                     {!stories.length && !publicOrNot && (
-                        <div className="pageCode">
-                            <form className="codeForm">
-                                <h2 onClick={() => console.log()}>
-                                    This case is only accessible with a code
-                                </h2>
-                                <label htmlFor="code">
-                                    Please enter the code
-                                </label>
-                                <input
+                        <div className="mainCon">
+                            <div className="mainConBack">
+                                <div className="pageCode">
+                                    <form className="codeForm">
+                                        <h2 onClick={() => console.log()}>
+                                            This case is only accessible with a
+                                            code
+                                        </h2>
+                                        <label htmlFor="code">
+                                            Please enter the code
+                                        </label>
+                                        {/* <input
                                     name="code"
                                     onChange={(e) =>
                                         setInputData(e.target.value)
                                     }
-                                />
-                                <button
-                                    onClick={(e) => {
-                                        handleSubmit(e);
-                                    }}
-                                >
-                                    Submit
-                                </button>
-                            </form>
+                                /> */}
+
+                                        <TextField
+                                            label="Code"
+                                            variant="outlined"
+                                            name="code"
+                                            inputProps={{
+                                                className: classes.input,
+                                            }}
+                                            onChange={(e) => {
+                                                setInputData(e.target.value);
+                                            }}
+                                        />
+                                        <button
+                                            onClick={(e) => {
+                                                handleSubmit(e);
+                                            }}
+                                        >
+                                            Submit
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     )}
 
