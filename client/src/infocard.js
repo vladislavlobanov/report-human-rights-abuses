@@ -16,26 +16,41 @@ export default function InfoCard({ drafts, showButton, handleEdit }) {
             day: "numeric",
             hour: "numeric",
             minute: "numeric",
-            second: "numeric",
             hour12: false,
         };
-        d = new Intl.DateTimeFormat("en-US", options).format(d).toString();
+        d = new Intl.DateTimeFormat("en-UK", options).format(d).toString();
         return d;
     };
 
     return (
-        <>
-            <h3>Info Cards</h3>
+        <div className="caseDetails">
+            <h2>Case Details</h2>
+            {drafts.length == 0 && <div>You have not submitted any drafts</div>}
             {drafts.map((draft) => (
-                <div key={draft.id}>
-                    <div>Who: {draft.who}</div>
-                    <div>What: {draft.what}</div>
-                    <div>When: {dateConverter(draft.whenhappened)}</div>
-                    <div>Where: {draft.wherehappened}</div>
-                    <div>
-                        Exact location: {draft.longitude}, {draft.latitude}
+                <div key={draft.id} className="caseCard">
+                    <div className="fiveQuestions">
+                        <div>
+                            <span className="makeBold">Who: </span> {draft.who}
+                        </div>
+                        <div>
+                            <span className="makeBold">What:</span> {draft.what}
+                        </div>
+                        <div>
+                            <span className="makeBold">When:</span>{" "}
+                            {dateConverter(draft.whenhappened)}
+                        </div>
+                        <div>
+                            <span className="makeBold">Why:</span> {draft.why}
+                        </div>
+                        <div>
+                            <span className="makeBold">Where:</span>{" "}
+                            {draft.wherehappened}
+                        </div>
                     </div>
-                    <div className="map">
+                    {/* <div>
+                        Exact location: {draft.longitude}, {draft.latitude}
+                    </div> */}
+                    <div className="smallMap">
                         <SmallMap
                             mapboxApiAccessToken={secrets.mapbox}
                             center={[
@@ -48,32 +63,35 @@ export default function InfoCard({ drafts, showButton, handleEdit }) {
                             }}
                         />
                     </div>
-                    <div>Why: {draft.why}</div>
-                    {showButton && (
-                        <>
-                            <button onClick={(e) => handleDelete(e, draft.id)}>
-                                DELETE
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    handleEdit(e, {
-                                        id: draft.id,
-                                        who: draft.who,
-                                        what: draft.what,
-                                        wherehappened: draft.wherehappened,
-                                        when: draft.whenhappened,
-                                        longitude: draft.longitude,
-                                        latitude: draft.latitude,
-                                        why: draft.why,
-                                    });
-                                }}
-                            >
-                                EDIT
-                            </button>
-                        </>
-                    )}
+                    <div className="buttons">
+                        {showButton && (
+                            <>
+                                <button
+                                    onClick={(e) => {
+                                        handleEdit(e, {
+                                            id: draft.id,
+                                            who: draft.who,
+                                            what: draft.what,
+                                            wherehappened: draft.wherehappened,
+                                            when: draft.whenhappened,
+                                            longitude: draft.longitude,
+                                            latitude: draft.latitude,
+                                            why: draft.why,
+                                        });
+                                    }}
+                                >
+                                    EDIT
+                                </button>
+                                <button
+                                    onClick={(e) => handleDelete(e, draft.id)}
+                                >
+                                    DELETE
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </div>
             ))}
-        </>
+        </div>
     );
 }

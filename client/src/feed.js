@@ -4,6 +4,7 @@ import { useState, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { socket } from "./socket.js";
+import MailTo from "./mailto";
 
 export default function Feed() {
     const headlines = useSelector((state) => state.headlines);
@@ -38,10 +39,10 @@ export default function Feed() {
             day: "numeric",
             hour: "numeric",
             minute: "numeric",
-            second: "numeric",
+
             hour12: false,
         };
-        d = new Intl.DateTimeFormat("en-US", options).format(d).toString();
+        d = new Intl.DateTimeFormat("en-UK", options).format(d).toString();
         return d;
     };
 
@@ -72,42 +73,59 @@ export default function Feed() {
     };
 
     return (
-        <>
-            <h3>Feed</h3>
-            <div>
+        <div className="feedContainer">
+            <h2>Feed</h2>
+            <div className="insideFeedContainer">
                 {!headlines.length ? (
                     <div>No messages in the feed yet</div>
                 ) : (
                     <>
-                        <div>
+                        <div className="feedCardsContainer">
                             {headlines.map((headline, index) => (
-                                <div key={index}>
+                                <div key={index} className="feedCard">
                                     <div>
+                                        Published by:{" "}
                                         <Link to={`/case/${headline.id}`}>
                                             {headline.first} {headline.last}
                                         </Link>
                                     </div>
                                     <div>
-                                        Published on{" "}
+                                        Contact: {""}
+                                        <MailTo
+                                            label={headline.email}
+                                            mailto={"mailto:" + headline.email}
+                                        />
+                                    </div>
+                                    <div>
+                                        Date:{" "}
                                         <span>
                                             {dateConverter(headline.timestamp)}
                                         </span>
                                     </div>
                                     <div>
-                                        SHORT TEXT SENT BY USER:{" "}
-                                        {headline.headline}{" "}
+                                        <span className="makeBold">
+                                            {headline.headline}{" "}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <Link to={`/case/${headline.id}`}>
+                                            Full case
+                                        </Link>
                                     </div>
                                 </div>
                             ))}
-                            {!hideMoreButton && headlines.length > 2 && (
-                                <button onClick={() => moreHeadlines()}>
-                                    More
-                                </button>
-                            )}
                         </div>
+                        {!hideMoreButton && (
+                            <button
+                                onClick={() => moreHeadlines()}
+                                className="buttonStyle"
+                            >
+                                More
+                            </button>
+                        )}
                     </>
                 )}
             </div>
-        </>
+        </div>
     );
 }

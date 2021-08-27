@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import InfoCard from "./infocard";
 
-export default function CaseProfile({ match, history }) {
+export default function CaseProfile({ match, history, standalone }) {
     const [isValid, setValid] = useState();
     const [inputData, setInputData] = useState();
     const [stories, setStories] = useState([]);
@@ -88,7 +88,11 @@ export default function CaseProfile({ match, history }) {
                     )}
 
                     {stories.length > 0 && (
-                        <InfoCard drafts={stories} showButton={false} />
+                        <InfoCard
+                            drafts={stories}
+                            showButton={false}
+                            standalone={true}
+                        />
                     )}
                 </>
             )}

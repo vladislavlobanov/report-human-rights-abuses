@@ -10,10 +10,24 @@ import { socket } from "./socket.js";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import moment from "moment";
+import { makeStyles } from "@material-ui/core";
 
 const options = ["Option 1", "Option 2"];
 
 export default function Report({ match, history }) {
+    let textInput = useRef(null);
+    let dateInput = useRef(null);
+    const useStyles = makeStyles((theme) => ({
+        input: {
+            backgroundColor: "white",
+            borderRadius: "inherit",
+        },
+        inputRoot: {
+            backgroundColor: "white",
+        },
+    }));
+    const classes = useStyles();
+
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState([]);
     const [center, setCenter] = useState([]);
@@ -22,9 +36,12 @@ export default function Report({ match, history }) {
     const [location, setLocation] = useState(false);
     const [receivedPin, setReceivedPin] = useState({});
     const [draftId, setDraftId] = useState();
-    const [currentDateString, setCurrentDate] = useState();
+    const [currentDateString, setCurrentDate] = useState("");
     const [inputValue, setInputValue] = useState("");
     const [value, setValue] = useState("");
+    const [whoValue, setWhoValue] = useState("");
+    const [whatValue, setWhatValue] = useState("");
+    const [whyValue, setWhyValue] = useState("");
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
@@ -51,67 +68,67 @@ export default function Report({ match, history }) {
     const handleMore = async (e) => {
         e.preventDefault();
         if (!draftId) {
-            console.log(fields);
             socket.emit("newDraft", fields);
-            who.current.value = "";
-            what.current.value = "";
-            // when.current.value = "";
-
-            why.current.value = "";
             setSearchTerm("");
             setLocation(!location);
-            setFields({});
+            setCurrentDate(
+                moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
+            );
+            setFields({ when: currentDateString });
         } else {
             socket.emit("editDraft", fields);
-            who.current.value = "";
-            what.current.value = "";
-            // when.current.value = "";
+            // setCurrentDate(
+            //     moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
+            // );
+            // setFields({ who: "", what: "", why: "" });
 
-            why.current.value = "";
             setSearchTerm("");
             setLocation(!location);
-            setFields({});
+            setCurrentDate(
+                moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
+            );
+            setFields({ when: currentDateString });
             setDraftId("");
         }
     };
 
-    const searchHtml = (
-        <>
-            {searchTerm && (
-                <>
-                    {searchTerm && searchData.length > 0 ? (
-                        <>
-                            <div className="dropDown">
-                                {searchData.map((searchData, index) => (
-                                    <div
-                                        key={index}
-                                        tabIndex={0}
-                                        className="dropDownElement"
-                                        onInput={onInput}
-                                        onClick={() => {
-                                            setSearchTerm(
-                                                searchData.place_name
-                                            );
-                                            setFields({
-                                                ...fields,
-                                                where: searchData.place_name,
-                                                ...pin,
-                                            });
+    // const searchHtml = (
+    //     <>
+    //         {searchTerm && (
+    //             <>
+    //                 {searchTerm && searchData.length > 0 ? (
+    //                     <>
+    //                         <div className="dropDown">
+    //                             {searchData.map((searchData, index) => (
+    //                                 <div
+    //                                     key={index}
+    //                                     tabIndex={0}
+    //                                     className="dropDownElement"
+    //                                     onInput={onInput}
+    //                                     onClick={() => {
+    //                                         setSearchTerm(
+    //                                             searchData.place_name
+    //                                         );
+    //                                         setFields({
+    //                                             ...fields,
+    //                                             where: searchData.place_name,
+    //                                             ...pin,
+    //                                         });
 
-                                            setCenter(searchData.center);
-                                            setSearchData([]);
-                                        }}
-                                    >
-                                        {searchData.place_name}
-                                    </div>
-                                ))}
-                            </div>
-                        </>
-                    ) : null}
-                </>
-            )}
-        </>
-    );
+    //                                         setCenter(searchData.center);
+    //                                         setSearchData([]);
+    //                                     }}
+    //                                 >
+    //                                     {searchData.place_name}
+    //                                 </div>
+    //                             ))}
+    //                         </div>
+    //                     </>
+    //                 ) : null}
+    //             </>
+    //         )}
+    //     </>
+    // );
 
     const handleInputs = (e) => {
         setFields({
@@ -130,10 +147,11 @@ export default function Report({ match, history }) {
 
     const handleEdit = (e, data) => {
         e.preventDefault();
-        who.current.value = data.who;
-        what.current.value = data.what;
-        setCurrentDate(data.when);
-        why.current.value = data.why;
+        setWhoValue(data.who);
+        setWhatValue(data.what);
+        // setCurrentDate(data.when.slice(0, 16));
+        // console.log(currentDateString);
+        setWhyValue(data.why);
         setSearchTerm(data.wherehappened);
         setCenter([Number(data.longitude), Number(data.latitude)]);
         setReceivedPin({
@@ -144,7 +162,7 @@ export default function Report({ match, history }) {
         setFields({
             who: data.who,
             what: data.what,
-            when: data.when,
+            when: data.when.slice(0, 16),
             where: data.wherehappened,
             longitude: Number(data.longitude),
             latitude: Number(data.latitude),
@@ -156,14 +174,12 @@ export default function Report({ match, history }) {
     };
 
     useEffect(() => {
-        setCurrentDate(
-            moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
-        );
         setFields({
             ...fields,
-            when: currentDateString,
+            when:
+                moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm"),
         });
-    }, [currentDateString]);
+    }, []);
 
     async function onInput(value) {
         if (value) {
@@ -189,37 +205,76 @@ export default function Report({ match, history }) {
 
     return (
         <div className="reportContainer">
-            <h1 onClick={() => console.log(fields)}>Report component</h1>
-            <form>
-                <label htmlFor="who">Who:</label>
-                <input
+            <div className="leftSide">
+                <h2
+                    onClick={() => {
+                        console.log(fields);
+                    }}
+                >
+                    Report Your Incident
+                </h2>
+                <form className="insideForm">
+                    <div className="inputs">
+                        {/* <input
                     name="who"
                     ref={who}
                     onChange={(e) => {
                         handleInputs(e);
                     }}
-                />
-                <label htmlFor="what">What:</label>
-                <input
-                    name="what"
-                    ref={what}
-                    onChange={(e) => {
-                        handleInputs(e);
-                    }}
-                />
-                <TextField
-                    name="when"
-                    ref={when}
-                    id="datetime-local"
-                    label="When"
-                    type="datetime-local"
-                    defaultValue={currentDateString}
-                    onChange={(e) => handleInputs(e)}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-                {/* <label htmlFor="when">When:</label>
+                /> */}
+                        <TextField
+                            label="Who"
+                            variant="outlined"
+                            inputRef={textInput}
+                            name="who"
+                            ref={who}
+                            value={fields.who || ""}
+                            InputLabelProps={{
+                                shrink: fields.who ? true : false,
+                            }}
+                            inputProps={{ className: classes.input }}
+                            onChange={(e) => {
+                                handleInputs(e);
+                            }}
+                        />
+
+                        <TextField
+                            label="What"
+                            variant="outlined"
+                            name="what"
+                            value={fields.what || ""}
+                            InputLabelProps={{
+                                shrink: fields.what ? true : false,
+                            }}
+                            ref={what}
+                            inputProps={{ className: classes.input }}
+                            onChange={(e) => {
+                                handleInputs(e);
+                            }}
+                        />
+                        <TextField
+                            name="when"
+                            ref={when}
+                            id="datetime-local"
+                            label="When"
+                            inputRef={dateInput}
+                            type="datetime-local"
+                            value={
+                                fields.when ||
+                                moment().format("YYYY-MM-DD") +
+                                    `T` +
+                                    moment().format("HH:mm")
+                            }
+                            variant="outlined"
+                            inputProps={{ className: classes.input }}
+                            onChange={(e) => {
+                                handleInputs(e);
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        {/* <label htmlFor="when">When:</label>
                 <input
                     name="when"
                     ref={when}
@@ -227,62 +282,8 @@ export default function Report({ match, history }) {
                         handleInputs(e);
                     }}
                 /> */}
-                <label htmlFor="where">Where:</label>
-                <div>{`Select: ${value !== null ? `'${value}'` : "null"}`}</div>
-                <div>{`Searchterm: '${searchTerm}'`}</div>
-                <Autocomplete
-                    id="free-solo-demo"
-                    freeSolo
-                    // options={options}
-                    options={searchData.map(
-                        (searchData) => searchData.place_name
-                    )}
-                    inputValue={searchTerm}
-                    onInputChange={(e, value) => {
-                        setSearchTerm(value);
-                        onInput(searchTerm);
-                        setFields({
-                            ...fields,
-                            where: value,
-                            ...pin,
-                        });
-                    }}
-                    value={value}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
-                        if (
-                            event.target.getAttribute("data-option-index") !=
-                            null
-                        ) {
-                            setCenter(
-                                searchData[
-                                    event.target.getAttribute(
-                                        "data-option-index"
-                                    )
-                                ].center
-                            );
-                            setFields({
-                                ...fields,
-                                where: searchData[
-                                    event.target.getAttribute(
-                                        "data-option-index"
-                                    )
-                                ].place_name,
-                                ...pin,
-                            });
-                        }
-                    }}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="freeSolo"
-                            margin="normal"
-                            variant="outlined"
-                        />
-                    )}
-                />
 
-                {/* <div className="whereContainer">
+                        {/* <div className="whereContainer">
                     <input
                         autoComplete="off"
                         ref={where}
@@ -299,56 +300,127 @@ export default function Report({ match, history }) {
                     />
                     {searchHtml}
                 </div> */}
-                <label htmlFor="why">Why:</label>
-                <input
-                    ref={why}
-                    name="why"
-                    onChange={(e) => {
-                        handleInputs(e);
-                    }}
-                />
-                {fields.who &&
-                fields.what &&
-                fields.where &&
-                fields.longitude &&
-                fields.latitude &&
-                fields.why ? (
-                    <>
-                        <button onClick={(e) => handleMore(e)}>Save</button>
-                    </>
-                ) : (
-                    <button disabled>Save</button>
-                )}
 
-                {drafts.length > 0 ? (
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault();
-                            history.push("/finalize");
-                        }}
-                    >
-                        Procced to submission
-                    </button>
-                ) : (
-                    <button disabled>Procced to submission</button>
-                )}
-            </form>
-            <div className="map">
-                <Map
-                    center={center}
-                    mapboxApiAccessToken={secrets.mapbox}
-                    handlePinChange={handlePinChange}
-                    deleteLocation={location}
-                    receivedPin={receivedPin}
-                />
+                        <TextField
+                            label="Why"
+                            variant="outlined"
+                            name="why"
+                            ref={why}
+                            value={fields.why || ""}
+                            InputLabelProps={{
+                                shrink: fields.why ? true : false,
+                            }}
+                            inputProps={{ className: classes.input }}
+                            onChange={(e) => {
+                                handleInputs(e);
+                            }}
+                        />
+                    </div>
+
+                    <div className="map">
+                        <Autocomplete
+                            freeSolo
+                            // options={options}
+                            options={searchData.map(
+                                (searchData) => searchData.place_name
+                            )}
+                            inputValue={searchTerm}
+                            classes={classes}
+                            onInputChange={(e, value) => {
+                                setSearchTerm(value);
+                                onInput(searchTerm);
+                                setFields({
+                                    ...fields,
+                                    where: value,
+                                    ...pin,
+                                });
+                            }}
+                            value={value}
+                            onChange={(event, newValue) => {
+                                setValue(newValue);
+                                if (
+                                    event.target.getAttribute(
+                                        "data-option-index"
+                                    ) != null
+                                ) {
+                                    setCenter(
+                                        searchData[
+                                            event.target.getAttribute(
+                                                "data-option-index"
+                                            )
+                                        ].center
+                                    );
+                                    setFields({
+                                        ...fields,
+                                        where: searchData[
+                                            event.target.getAttribute(
+                                                "data-option-index"
+                                            )
+                                        ].place_name,
+                                        ...pin,
+                                    });
+                                }
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Search/enter address & pin exact location below on the map"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
+                        <div className="mapWrapper">
+                            <Map
+                                center={center}
+                                mapboxApiAccessToken={secrets.mapbox}
+                                handlePinChange={handlePinChange}
+                                deleteLocation={location}
+                                receivedPin={receivedPin}
+                            />
+                        </div>
+
+                        <div className="buttons">
+                            {fields.who &&
+                            fields.what &&
+                            fields.where &&
+                            fields.longitude &&
+                            fields.latitude &&
+                            fields.why ? (
+                                <>
+                                    <button onClick={(e) => handleMore(e)}>
+                                        Save
+                                    </button>
+                                </>
+                            ) : (
+                                <button disabled>Save</button>
+                            )}
+
+                            {drafts.length > 0 ? (
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        history.push("/finalize");
+                                    }}
+                                >
+                                    Procced to submission
+                                </button>
+                            ) : (
+                                <button disabled>Procced to submission</button>
+                            )}
+                        </div>
+                    </div>
+                </form>
             </div>
-            {drafts.length > 0 && (
-                <InfoCard
-                    drafts={drafts}
-                    showButton={true}
-                    handleEdit={handleEdit}
-                />
-            )}
+            <div className="rightSide">
+                <div className="wrapper">
+                    <InfoCard
+                        drafts={drafts}
+                        showButton={true}
+                        handleEdit={handleEdit}
+                        standalone={false}
+                    />
+                </div>
+            </div>
         </div>
     );
 }

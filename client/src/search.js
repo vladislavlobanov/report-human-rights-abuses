@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import MailTo from "./mailto";
 
 export default function Search() {
     const [searchTerm, setSearchTerm] = useState();
@@ -31,16 +32,15 @@ export default function Search() {
             day: "numeric",
             hour: "numeric",
             minute: "numeric",
-            second: "numeric",
             hour12: false,
         };
-        d = new Intl.DateTimeFormat("en-US", options).format(d).toString();
+        d = new Intl.DateTimeFormat("en-UK", options).format(d).toString();
         return d;
     };
 
     return (
-        <>
-            <h3>Search</h3>
+        <div className="feedContainer">
+            <h2>Search</h2>
             <input
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Enter your search request"
@@ -49,33 +49,52 @@ export default function Search() {
                 <>
                     {searchTerm && searchData.length > 0 ? (
                         <>
-                            {searchData.map((searchData, index) => (
-                                <div key={index}>
-                                    <div>
-                                        <Link to={`/case/${searchData.id}`}>
-                                            {searchData.first} {searchData.last}
-                                        </Link>
+                            <div className="feedCardsContainer">
+                                {searchData.map((searchData, index) => (
+                                    <div key={index} className="feedCard">
+                                        <div>
+                                            Published by:{" "}
+                                            <Link to={`/case/${searchData.id}`}>
+                                                {searchData.first}{" "}
+                                                {searchData.last}
+                                            </Link>
+                                        </div>
+                                        <div>
+                                            Contact: {""}
+                                            <MailTo
+                                                label={searchData.email}
+                                                mailto={
+                                                    "mailto:" + searchData.email
+                                                }
+                                            />
+                                        </div>
+                                        <div>
+                                            Date:{" "}
+                                            <span>
+                                                {dateConverter(
+                                                    searchData.timestamp
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className="makeBold">
+                                                {searchData.headline}{" "}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <Link to={`/case/${searchData.id}`}>
+                                                Full case
+                                            </Link>
+                                        </div>
                                     </div>
-                                    <div>
-                                        Published on{" "}
-                                        <span>
-                                            {dateConverter(
-                                                searchData.timestamp
-                                            )}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        SHORT TEXT SENT BY USER:{" "}
-                                        {searchData.headline}{" "}
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </>
                     ) : (
                         <div>Nothing has been found</div>
                     )}
                 </>
             )}
-        </>
+        </div>
     );
 }

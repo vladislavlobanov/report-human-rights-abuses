@@ -4,6 +4,8 @@ import Select from "react-select";
 import { socket } from "./socket.js";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { useDispatch, useSelector } from "react-redux";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
 export default function SendDrafts({ userId }) {
     const [headline, setHeadline] = useState();
@@ -86,25 +88,59 @@ export default function SendDrafts({ userId }) {
         setSelectedOption(selectedOption);
     };
 
-    if (!drafts) {
+    if (!drafts && !options) {
         return null;
     }
 
     const mainHtml = (
         <>
-            {drafts.length > 0 && (
+            {drafts != null && options != null && drafts.length > 0 && (
                 <>
-                    <p>Write a short description</p>
-                    <textarea
-                        onChange={(e) => {
-                            setHeadline(e.target.value);
-                        }}
-                    ></textarea>
-                    <p>
-                        Please select HR organizations to send your story. It
-                        will only be available via a secret link to recipients.
-                    </p>
-                    <form>
+                    <div className="textAreaCont">
+                        <div>
+                            Please provide a short description of your case, i.e
+                            like a Twitter post
+                        </div>
+                        <textarea
+                            onChange={(e) => {
+                                setHeadline(e.target.value);
+                            }}
+                        ></textarea>
+                        <div>
+                            Please select HR organizations to send your story.
+                            It will only be available to those organizations via
+                            a secret link to recipients.
+                        </div>
+                    </div>
+                    <form className="sendDraftsForm">
+                        {/* 
+                        <Select
+                            value={selectedOption}
+                            onChange={(selectedOption) => {
+                                handleSelect(selectedOption);
+                            }}
+                            options={options}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            isMulti
+                        /> */}
+                        <div className="autoCompleteWrapper">
+                            <Autocomplete
+                                multiple
+                                options={options}
+                                getOptionLabel={(option) => option.label}
+                                defaultValue={selectedOption || ""}
+                                filterSelectedOptions
+                                onChange={(event, value) => handleSelect(value)}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="outlined"
+                                        label="Choose organizations"
+                                    />
+                                )}
+                            />
+                        </div>
                         <div>
                             <input
                                 type="checkbox"
@@ -120,17 +156,7 @@ export default function SendDrafts({ userId }) {
                                 and appear in the feed
                             </label>
                         </div>
-                        <div>Select organizations</div>
-                        <Select
-                            value={selectedOption}
-                            onChange={(selectedOption) => {
-                                handleSelect(selectedOption);
-                            }}
-                            options={options}
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                            isMulti
-                        />
+
                         {submitVisible ? (
                             <button onClick={(e) => handleSubmit(e)}>
                                 Submit
@@ -143,17 +169,18 @@ export default function SendDrafts({ userId }) {
                     </form>
                 </>
             )}
-            {drafts.length == 0 && <p>You have no cases to submit</p>}
+            {drafts != null && drafts.length == 0 && (
+                <p>You have no cases to submit</p>
+            )}
         </>
     );
 
     return (
-        <>
-            <h3>Send drafts</h3>
+        <div className="sendDrafts">
+            <h2>Send drafts</h2>
+
             {!showSuccess && mainHtml}
-            {showSuccess && <p>You report has been successfully submitted</p>}
-        </>
+            {showSuccess && <p>You report has been successfully submitted!</p>}
+        </div>
     );
 }
-
-//instead of drafts.length add FALSE statement
