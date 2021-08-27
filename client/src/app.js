@@ -61,6 +61,7 @@ export default class App extends Component {
                     </header>
 
                     <Route exact path="/" component={Feed} />
+
                     <Route exact path="/search" component={Search} />
                     <Route
                         path="/draft"

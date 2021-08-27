@@ -72,7 +72,16 @@ router.get("/getmore", async (req, res) => {
         const results = await db.getMoreHeadlines(req.query.id);
         res.json(results.rows);
     } catch (err) {
-        console.log("Error in post /getmore db query: ", err);
+        console.log("Error in get /getmore db query: ", err);
+    }
+});
+
+router.get("/getfeed", async (req, res) => {
+    try {
+        const results = await db.getLastTenHeadlines();
+        res.json(results.rows);
+    } catch (err) {
+        console.log("Error in get /getfeed db query: ", err);
     }
 });
 

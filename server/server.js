@@ -103,11 +103,12 @@ io.on("connection", async function (socket) {
         }
     });
 
-    const { rows: headlinesRows } = await db.getLastTenHeadlines();
-    socket.emit("lastHeadlines", headlinesRows);
-
     socket.on("newHeadline", (data) => {
         io.emit("updateHeadlines", data);
+    });
+
+    socket.on("lastHeadlines", (data) => {
+        socket.emit("lastHeadlinesEmit", data);
     });
 
     socket.on("newSet", (data) => {

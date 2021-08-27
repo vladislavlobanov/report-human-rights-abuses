@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -7,12 +7,13 @@ import { socket } from "./socket.js";
 import MailTo from "./mailto";
 
 export default function Feed() {
-    const headlines = useSelector((state) => state.headlines);
-    const [lowest, setLowest] = useState();
+    let headlines = useSelector((state) => state.headlines);
+
+    const [lowest, setLowest] = useState("");
     const [hideMoreButton, setHideMoreButton] = useState(false);
     const [receivedData, setData] = useState();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!headlines) {
             return;
         }
@@ -26,6 +27,15 @@ export default function Feed() {
             setHideMoreButton(true);
         }
     }, [headlines]);
+
+    useEffect(async () => {
+        try {
+            const { data } = await axios.get(`/getfeed`);
+            socket.emit("lastHeadlines", data);
+        } catch (err) {
+            console.log("Err in getting feed", err);
+        }
+    }, []);
 
     if (!headlines) {
         return null;

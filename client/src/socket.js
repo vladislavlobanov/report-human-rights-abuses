@@ -12,7 +12,8 @@ export const init = (store) => {
         socket = io.connect();
     }
 
-    socket.on("lastHeadlines", (data) => {
+    socket.on("lastHeadlinesEmit", (data) => {
+        console.log(data);
         store.dispatch(headlinesReceived(data));
     });
 
