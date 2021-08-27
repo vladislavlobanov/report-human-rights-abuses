@@ -1,7 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Molengo&display=swap");
+
 body {
     background-color: ghostwhite;
     margin: 0;
     box-sizing: border-box;
+    background-color: #fef7dc;
+}
+
+header {
+    position: relative;
 }
 
 .reportContainer {
@@ -70,7 +77,39 @@ input {
 }
 
 button {
+    text-transform: uppercase;
     width: fit-content;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    border: none;
+    font-size: 20px;
+    background-color: #c2b8a3;
+    color: white;
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #e6ddc6;
+}
+
+button:hover {
+    background-color: #a19882;
+}
+
+button:disabled,
+button[disabled] {
+    background-color: #cccccc;
+    color: #a1a1a19b;
+}
+
+.regForm h1,
+h2 {
+    margin: 0;
+    display: block;
 }
 
 .caseDetails {
@@ -190,19 +229,25 @@ textarea {
     width: 300px;
     text-align: center;
     gap: 5px;
-    border: 1px solid lightgray;
+
     padding: 10px;
+
+    background-color: #e6ddc6a2;
+    padding: 50px;
+    border-radius: 5px;
+    border: 1px solid #dadadab9;
 }
 
 .feedContainer {
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    background-color: peachpuff;
     padding-right: 10px;
     padding-left: 10px;
     padding-bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .insideFeedContainer {
@@ -237,10 +282,29 @@ textarea {
     align-items: center;
 }
 
+header a,
+header a:hover,
+header a:focus,
+header a:active {
+    text-decoration: none;
+}
+
 header {
     display: flex;
     flex-direction: row;
     height: 100px;
+    background-color: #a19882;
+}
+
+header a {
+    height: fit-content;
+}
+
+header h1 {
+    font-size: 45px;
+    color: #fef7dc;
+    width: 100%;
+    vertical-align: center;
 }
 
 .logo {
@@ -248,6 +312,8 @@ header {
     flex: 1;
     justify-content: flex-start;
     padding-left: 20px;
+    align-items: center;
+    font-family: "Molengo", sans-serif;
 }
 
 .headerRight {
@@ -259,9 +325,23 @@ header {
     gap: 20px;
 }
 
+.mainCon {
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainConBack {
+    background-color: #e6ddc6a2;
+    padding: 50px;
+    border-radius: 5px;
+    border: 1px solid #dadadab9;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .register {
     display: flex;
-    height: calc(100vh - 100px);
     justify-content: center;
     align-items: center;
 }
@@ -269,9 +349,8 @@ header {
 .regForm {
     display: flex;
     flex-direction: column;
-    height: fit-content;
     align-items: center;
-    gap: 5px;
+    gap: 20px;
 }
 
 .formRegContainter {

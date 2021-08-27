@@ -45,31 +45,33 @@ export class Login extends Component {
 
     render() {
         return (
-            <div className="register">
-                <div className="regForm">
-                    <h1>Log in</h1>
-                    {this.state.error && (
-                        <h2 style={{ color: "red" }}>
-                            {this.state.errMessage}
-                        </h2>
-                    )}
-                    <form className="formRegContainter">
-                        {/* <label htmlFor="email">Email</label>
+            <div className="mainCon">
+                <div className="mainConBack">
+                    <div className="register">
+                        <div className="regForm">
+                            <h1>Log in</h1>
+                            {this.state.error && (
+                                <h2 style={{ color: "red" }}>
+                                    {this.state.errMessage}
+                                </h2>
+                            )}
+                            <form className="formRegContainter">
+                                {/* <label htmlFor="email">Email</label>
                         <input name="email" onChange={this.handleChange} /> */}
 
-                        <TextField
-                            variant="outlined"
-                            name="email"
-                            label="Email"
-                            onChange={this.handleChange}
-                            inputProps={{
-                                style: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                        />
+                                <TextField
+                                    variant="outlined"
+                                    name="email"
+                                    label="Email"
+                                    onChange={this.handleChange}
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
+                                />
 
-                        {/* <label htmlFor="password" onChange={this.handleChange}>
+                                {/* <label htmlFor="password" onChange={this.handleChange}>
                             Password
                         </label>
                         <input
@@ -77,27 +79,29 @@ export class Login extends Component {
                             name="password"
                             onChange={this.handleChange}
                         /> */}
-                        <TextField
-                            variant="outlined"
-                            name="password"
-                            label="Password"
-                            type="password"
-                            inputProps={{
-                                style: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                            onChange={this.handleChange}
-                        />
-                        <button onClick={(e) => this.handleSubmit(e)}>
-                            Log in
-                        </button>
-                    </form>
-                    <div>
-                        Forgot your password? Reset your password{" "}
-                        <Link className="chatName" to="/password-reset">
-                            here
-                        </Link>
+                                <TextField
+                                    variant="outlined"
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
+                                    onChange={this.handleChange}
+                                />
+                                <button onClick={(e) => this.handleSubmit(e)}>
+                                    Log in
+                                </button>
+                            </form>
+                            <div>
+                                Forgot your password? Reset your password{" "}
+                                <Link className="chatName" to="/password-reset">
+                                    here
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

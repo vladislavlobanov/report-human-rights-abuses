@@ -98,98 +98,120 @@ export class ResetPassword extends Component {
         // this method determines what the render!
         if (this.state.view === 1) {
             return (
-                <div className="register">
-                    <div className="regForm">
-                        <h1>Reset Password</h1>
-                        {this.state.error && (
-                            <h2 style={{ color: "red" }}>
-                                {this.state.errMessage}
-                            </h2>
-                        )}
-                        <section>
-                            <form className="formRegContainter">
-                                <div>
-                                    Please provide the email address with which
-                                    you registered
-                                </div>
+                <div className="mainCon">
+                    <div className="mainConBack">
+                        <div className="register">
+                            <div className="regForm">
+                                <h1>Reset Password</h1>
+                                {this.state.error && (
+                                    <h2 style={{ color: "red" }}>
+                                        {this.state.errMessage}
+                                    </h2>
+                                )}
+                                <section>
+                                    <form className="formRegContainter">
+                                        <div>
+                                            Please provide the email address
+                                            with which you registered
+                                        </div>
 
-                                <TextField
-                                    variant="outlined"
-                                    name="email"
-                                    label="Email"
-                                    onChange={this.handleChange}
-                                    inputProps={{
-                                        style: {
-                                            backgroundColor: "white",
-                                        },
-                                    }}
-                                />
+                                        <TextField
+                                            variant="outlined"
+                                            name="email"
+                                            label="Email"
+                                            onChange={this.handleChange}
+                                            inputProps={{
+                                                style: {
+                                                    backgroundColor: "white",
+                                                },
+                                            }}
+                                        />
 
-                                <button onClick={(e) => this.handleSubmit(e)}>
-                                    Submit
-                                </button>
-                            </form>
-                        </section>
+                                        <button
+                                            onClick={(e) =>
+                                                this.handleSubmit(e)
+                                            }
+                                        >
+                                            Submit
+                                        </button>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
         } else if (this.state.view === 2) {
             return (
-                <div className="register">
-                    <div className="regForm">
-                        <h1>Reset Password</h1>
-                        {this.state.error && (
-                            <h2 style={{ color: "red" }}>
-                                {this.state.errMessage}
-                            </h2>
-                        )}
-                        <section>
-                            <form className="formRegContainter">
-                                <div>Please enter the code you received</div>
+                <div className="mainCon">
+                    <div className="mainConBack">
+                        <div className="register">
+                            <div className="regForm">
+                                <h1>Reset Password</h1>
+                                {this.state.error && (
+                                    <h2 style={{ color: "red" }}>
+                                        {this.state.errMessage}
+                                    </h2>
+                                )}
+                                <section>
+                                    <form className="formRegContainter">
+                                        <div>
+                                            Please enter the code you received
+                                        </div>
 
-                                <TextField
-                                    variant="outlined"
-                                    name="code"
-                                    label="Code"
-                                    onChange={this.handleChange}
-                                    inputProps={{
-                                        style: {
-                                            backgroundColor: "white",
-                                        },
-                                    }}
-                                />
+                                        <TextField
+                                            variant="outlined"
+                                            name="code"
+                                            label="Code"
+                                            onChange={this.handleChange}
+                                            inputProps={{
+                                                style: {
+                                                    backgroundColor: "white",
+                                                },
+                                            }}
+                                        />
 
-                                <TextField
-                                    variant="outlined"
-                                    name="password"
-                                    label="Password"
-                                    onChange={this.handleChange}
-                                    inputProps={{
-                                        style: {
-                                            backgroundColor: "white",
-                                        },
-                                    }}
-                                />
+                                        <TextField
+                                            variant="outlined"
+                                            name="password"
+                                            label="Password"
+                                            onChange={this.handleChange}
+                                            inputProps={{
+                                                style: {
+                                                    backgroundColor: "white",
+                                                },
+                                            }}
+                                        />
 
-                                <button onClick={(e) => this.handleSubmit(e)}>
-                                    Submit
-                                </button>
-                            </form>
-                        </section>
+                                        <button
+                                            onClick={(e) =>
+                                                this.handleSubmit(e)
+                                            }
+                                        >
+                                            Submit
+                                        </button>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
         } else if (this.state.view === 3) {
             return (
-                <div className="register">
-                    <div className="regForm">
-                        <h1>Success!</h1>
-                        <div>
-                            You can now{" "}
-                            <Link className="chatName" to="/login">
-                                log in
-                            </Link>{" "}
-                            with your new password
+                <div className="mainCon">
+                    <div className="mainConBack">
+                        <div className="register">
+                            <div className="regForm">
+                                <h1>Success!</h1>
+                                <div>
+                                    You can now{" "}
+                                    <Link className="chatName" to="/login">
+                                        log in
+                                    </Link>{" "}
+                                    with your new password
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

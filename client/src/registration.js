@@ -44,73 +44,77 @@ export class Registration extends Component {
 
     render() {
         return (
-            <div className="register">
-                <div className="regForm">
-                    <h1>Registration</h1>
-                    {this.state.error && (
-                        <h2 style={{ color: "red" }}>
-                            {this.state.errMessage}
-                        </h2>
-                    )}
+            <div className="mainCon">
+                <div className="mainConBack">
+                    <div className="register">
+                        <div className="regForm">
+                            <h1>Registration</h1>
+                            {this.state.error && (
+                                <h2 style={{ color: "red" }}>
+                                    {this.state.errMessage}
+                                </h2>
+                            )}
 
-                    <form className="formRegContainter">
-                        <TextField
-                            variant="outlined"
-                            name="first"
-                            label="First name"
-                            onChange={this.handleChange}
-                            inputProps={{
-                                style: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                        />
+                            <form className="formRegContainter">
+                                <TextField
+                                    variant="outlined"
+                                    name="first"
+                                    label="First name"
+                                    onChange={this.handleChange}
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
+                                />
 
-                        <TextField
-                            variant="outlined"
-                            name="last"
-                            label="Last name"
-                            onChange={this.handleChange}
-                            inputProps={{
-                                style: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                        />
+                                <TextField
+                                    variant="outlined"
+                                    name="last"
+                                    label="Last name"
+                                    onChange={this.handleChange}
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
+                                />
 
-                        <TextField
-                            variant="outlined"
-                            name="email"
-                            label="Email"
-                            onChange={this.handleChange}
-                            inputProps={{
-                                style: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                        />
+                                <TextField
+                                    variant="outlined"
+                                    name="email"
+                                    label="Email"
+                                    onChange={this.handleChange}
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
+                                />
 
-                        <TextField
-                            variant="outlined"
-                            name="password"
-                            label="Password"
-                            onChange={this.handleChange}
-                            inputProps={{
-                                style: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                        />
-                        <button onClick={(e) => this.handleSubmit(e)}>
-                            Register
-                        </button>
-                    </form>
-                    <div>
-                        Are you already registered? Click{" "}
-                        <Link className="chatName" to="/login">
-                            here
-                        </Link>{" "}
-                        to log in!
+                                <TextField
+                                    variant="outlined"
+                                    name="password"
+                                    label="Password"
+                                    onChange={this.handleChange}
+                                    inputProps={{
+                                        style: {
+                                            backgroundColor: "white",
+                                        },
+                                    }}
+                                />
+                                <button onClick={(e) => this.handleSubmit(e)}>
+                                    Register
+                                </button>
+                            </form>
+                            <div>
+                                Are you already registered? Click{" "}
+                                <Link className="chatName" to="/login">
+                                    here
+                                </Link>{" "}
+                                to log in!
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
