@@ -60,6 +60,7 @@ export default function SendDrafts({ userId }) {
         e.preventDefault();
 
         try {
+            setSubmit(false);
             const { data } = await axios.post("/senddrafts/", {
                 headline,
                 checked,
@@ -67,15 +68,6 @@ export default function SendDrafts({ userId }) {
             });
 
             if (selectedOption) {
-                console.log({
-                    id: data.linkId,
-                    user_id: data.userId,
-                    headline: data.headline,
-                    timestamp: data.timestamp,
-                    first: data.first,
-                    last: data.last,
-                    email: data.email,
-                });
                 socket.emit("newHeadline", {
                     id: data.linkId,
                     user_id: data.userId,

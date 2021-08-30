@@ -179,6 +179,7 @@ export class ResetPassword extends Component {
                                             name="password"
                                             label="New password"
                                             key="password"
+                                            type="password"
                                             onChange={this.handleChange}
                                             inputProps={{
                                                 style: {

@@ -29,7 +29,7 @@ exports.sendEmail = function (recipient, link, code) {
                     },
                 },
                 Subject: {
-                    Data: "New case for your to review from Report HRA",
+                    Data: "New case for your to review from Unheard Voices",
                 },
             },
         })

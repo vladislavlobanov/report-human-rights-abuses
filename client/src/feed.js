@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
@@ -6,27 +6,77 @@ import axios from "axios";
 import { socket } from "./socket.js";
 import MailTo from "./mailto";
 
+import { moveOneHeadline } from "./redux/headlines/slice.js";
+
 export default function Feed() {
     let headlines = useSelector((state) => state.headlines);
 
+    const dispatch = useDispatch();
+
     const [lowest, setLowest] = useState("");
-    const [hideMoreButton, setHideMoreButton] = useState(false);
+    const [hideMoreButton, setHideMoreButton] = useState(null);
     const [receivedData, setData] = useState();
+    const [moveHeadlines, setMove] = useState();
 
     useEffect(() => {
         if (!headlines) {
             return;
         }
+
         let newArr = [];
         for (let i = 0; i < headlines.length; i++) {
             newArr.push(headlines[i].id);
         }
         let lowestId = newArr.sort((a, b) => a - b)[0];
         setLowest(lowestId);
+
         if (lowestId == receivedData) {
             setHideMoreButton(true);
         }
+
+        socket.once("updateHeadlines", (data) => {
+            setMove(data.id);
+        });
     }, [headlines]);
+
+    useEffect(() => {
+        if (!headlines || !moveHeadlines) {
+            return;
+        }
+        if (headlines.length == 4 && hideMoreButton == true) {
+            dispatch(moveOneHeadline(headlines[headlines.length - 1]));
+            setHideMoreButton(false);
+            return;
+        }
+        if (hideMoreButton !== null && hideMoreButton !== true) {
+            console.log("we are here");
+            dispatch(moveOneHeadline(headlines[headlines.length - 1]));
+        }
+    }, [moveHeadlines]);
+
+    useEffect(async () => {
+        if (!headlines) {
+            return;
+        }
+
+        if (headlines.length !== 0 && headlines.length <= 3) {
+            try {
+                const { data } = await axios.get("/getmore", {
+                    params: {
+                        id: lowest,
+                    },
+                });
+
+                if (data.length == 0) {
+                    setHideMoreButton(true);
+                } else {
+                    setHideMoreButton(false);
+                }
+            } catch (err) {
+                console.log("Err checking if button should hide", err);
+            }
+        }
+    }, [lowest]);
 
     useEffect(async () => {
         try {
@@ -36,25 +86,6 @@ export default function Feed() {
             console.log("Err in getting feed", err);
         }
     }, []);
-
-    if (!headlines) {
-        return null;
-    }
-
-    const dateConverter = (dateToConvert) => {
-        let d = new Date(dateToConvert);
-        var options = {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-
-            hour12: false,
-        };
-        d = new Intl.DateTimeFormat("en-UK", options).format(d).toString();
-        return d;
-    };
 
     const moreHeadlines = async () => {
         try {
@@ -81,6 +112,25 @@ export default function Feed() {
             console.log("Err in getting more headlines", err);
         }
     };
+
+    const dateConverter = (dateToConvert) => {
+        let d = new Date(dateToConvert);
+        var options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+
+            hour12: false,
+        };
+        d = new Intl.DateTimeFormat("en-UK", options).format(d).toString();
+        return d;
+    };
+
+    if (!headlines || hideMoreButton == null) {
+        return null;
+    }
 
     return (
         <div className="feedContainer">
@@ -125,13 +175,18 @@ export default function Feed() {
                                 </div>
                             ))}
                         </div>
-                        {!hideMoreButton && (
-                            <button
-                                onClick={() => moreHeadlines()}
-                                className="buttonStyle"
-                            >
-                                More
-                            </button>
+
+                        {hideMoreButton == null ? null : (
+                            <>
+                                {!hideMoreButton && (
+                                    <button
+                                        onClick={() => moreHeadlines()}
+                                        className="buttonStyle"
+                                    >
+                                        More
+                                    </button>
+                                )}
+                            </>
                         )}
                     </>
                 )}

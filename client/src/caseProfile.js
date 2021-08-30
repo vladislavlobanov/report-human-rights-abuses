@@ -52,6 +52,14 @@ export default function CaseProfile({ match, history, standalone }) {
                         setValid(true);
                         setPublicOrNot(false);
                         setCaseId(data.id);
+
+                        const { data: userInfoReceived } = await axios.get(
+                            "/getuserinfo/",
+                            {
+                                params: { caseId: data.id },
+                            }
+                        );
+                        setUserInfo(userInfoReceived);
                     }
                 }
             } else {

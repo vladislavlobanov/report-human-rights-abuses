@@ -35,21 +35,21 @@ router.post("/senddrafts/", async (req, res) => {
 
         await db.updateLinksReport(result.rows[0].id, req.session.userId);
 
-        if (!req.body.checked) {
-            await ses.sendEmail(
-                secrets.email,
-                `${req.headers.origin}/case/${link}`,
-                secretCode
-            );
-        } else {
-            await ses.sendEmail(
-                secrets.email,
-                `${req.headers.origin}/case/${result.rows[0].id}`,
-                null
-            );
-        }
+        // if (!req.body.checked) {
+        //     await ses.sendEmail(
+        //         secrets.email,
+        //         `${req.headers.origin}/case/${link}`,
+        //         secretCode
+        //     );
+        // } else {
+        //     await ses.sendEmail(
+        //         secrets.email,
+        //         `${req.headers.origin}/case/${result.rows[0].id}`,
+        //         null
+        //     );
+        // }
 
-        console.log("Emails have been sent");
+        // console.log("Emails have been sent");
 
         const userData = await db.findUserById(req.session.userId);
         res.json({

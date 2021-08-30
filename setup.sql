@@ -46,4 +46,4 @@ DROP TABLE IF EXISTS report;
  );   
 
 
--- INSERT INTO organizations (name, email) VALUES ('Amnesty', 'amnesty@amnesty.org');
+INSERT INTO organizations (name, email) VALUES ('Frontline Defenders', 'frd@frd.org');

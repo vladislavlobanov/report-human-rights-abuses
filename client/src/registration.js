@@ -96,6 +96,7 @@ export class Registration extends Component {
                                     variant="outlined"
                                     name="password"
                                     label="Password"
+                                    type="password"
                                     onChange={this.handleChange}
                                     inputProps={{
                                         style: {
