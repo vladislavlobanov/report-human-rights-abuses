@@ -42,8 +42,42 @@ export function draftReceived(draft) {
 }
 
 export function deleteDraft(id) {
-    return {
-        type: "drafts/deleteDraft",
-        payload: { id },
-    };
+    // return {
+    //     type: "drafts/deleteDraft",
+    //     payload: { id },
+    // };
+
+    if (!id.inEdit) {
+        return async (dispatch) => {
+            try {
+                let { data: receivedDrafts } = await axios.get(`/getdrafts/`);
+                receivedDrafts = receivedDrafts.filter((draft) => {
+                    return draft.id !== id.data;
+                });
+
+                dispatch({
+                    type: "drafts/receivedDrafts",
+                    payload: { receivedDrafts },
+                });
+            } catch (err) {
+                console.log("Err in action creator receiveDrafts", err);
+            }
+        };
+    } else {
+        return async (dispatch) => {
+            try {
+                let { data: receivedDrafts } = await axios.get(`/getdrafts/`);
+                receivedDrafts = receivedDrafts.filter((draft) => {
+                    return draft.id !== id.inEdit;
+                });
+
+                dispatch({
+                    type: "drafts/receivedDrafts",
+                    payload: { receivedDrafts },
+                });
+            } catch (err) {
+                console.log("Err in action creator receiveDrafts", err);
+            }
+        };
+    }
 }

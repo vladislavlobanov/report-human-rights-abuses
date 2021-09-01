@@ -11,10 +11,11 @@ export default function InfoCard({
     handleEdit,
     standalone,
     userDetails,
+    inEdit,
 }) {
     const handleDelete = (e, draftId) => {
         e.preventDefault();
-        socket.emit("deleteDraft", draftId);
+        socket.emit("deleteDraft", draftId, false, inEdit);
     };
 
     const dateConverter = (dateToConvert) => {

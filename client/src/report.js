@@ -130,6 +130,7 @@ export default function Report({ match, history }) {
 
     const handleEdit = (e, data) => {
         e.preventDefault();
+
         setWhoValue(data.who);
         setWhatValue(data.what);
         // setCurrentDate(data.when.slice(0, 16));
@@ -201,7 +202,7 @@ export default function Report({ match, history }) {
             <div className="leftSide">
                 <h2
                     onClick={() => {
-                        console.log(fields);
+                        console.log(draftId);
                     }}
                 >
                     Report Your Incident
@@ -441,6 +442,7 @@ export default function Report({ match, history }) {
                         showButton={true}
                         handleEdit={handleEdit}
                         standalone={false}
+                        inEdit={draftId}
                     />
                 </div>
             </div>

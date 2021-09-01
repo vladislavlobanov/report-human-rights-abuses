@@ -90,13 +90,29 @@ io.on("connection", async function (socket) {
         }
     });
 
-    socket.on("deleteDraft", async (data, secondarg) => {
+    socket.on("deleteDraft", async (data, secondarg, thirdarg) => {
         if (secondarg) {
-            socket.emit("updateDraftsWDelete", data);
-        } else {
+            socket.emit("updateDraftsWDelete", {
+                data: data,
+            });
+        } else if (secondarg == false && !thirdarg) {
+            console.log("deleting when smth is not in edit");
             try {
                 await db.deleteDraft(data);
-                socket.emit("updateDraftsWDelete", data);
+                socket.emit("updateDraftsWDelete", {
+                    data: data,
+                });
+            } catch (err) {
+                console.log("Err in deleteDraft server", err);
+            }
+        } else if (secondarg == false && thirdarg) {
+            console.log("deleting when smth in edit");
+            try {
+                await db.deleteDraft(data);
+                socket.emit("updateDraftsWDelete", {
+                    data: data,
+                    inEdit: thirdarg,
+                });
             } catch (err) {
                 console.log("Err in deleteDraft server", err);
             }
