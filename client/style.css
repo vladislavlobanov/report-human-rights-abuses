@@ -430,6 +430,11 @@ header h1 {
 .makeSpace {
     height: 10px;
 }
+
+.MuiPaper-root {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 @media screen and (max-width: 1020px) {
     header {
         display: flex;

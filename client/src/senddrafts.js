@@ -6,7 +6,7 @@ import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 export default function SendDrafts({ userId }) {
     const [headline, setHeadline] = useState();

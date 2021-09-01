@@ -8,24 +8,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { socket } from "./socket.js";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Autocomplete } from "@material-ui/core";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
-const options = ["Option 1", "Option 2"];
+import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
+import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
+import DateTimePicker from "@material-ui/lab/DateTimePicker";
 
 export default function Report({ match, history }) {
     let textInput = useRef(null);
     let dateInput = useRef(null);
     const useStyles = makeStyles((theme) => ({
-        input: {
+        root: {
             backgroundColor: "white",
             borderRadius: "inherit",
         },
-        inputRoot: {
-            backgroundColor: "white",
-        },
     }));
+
     const classes = useStyles();
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -42,6 +42,8 @@ export default function Report({ match, history }) {
     const [whoValue, setWhoValue] = useState("");
     const [whatValue, setWhatValue] = useState("");
     const [whyValue, setWhyValue] = useState("");
+
+    const [valueDate, setValueDate] = useState(new Date());
 
     const geocoder = GeocoderService({
         accessToken: secrets.mapbox,
@@ -68,6 +70,7 @@ export default function Report({ match, history }) {
     const handleMore = async (e) => {
         e.preventDefault();
         if (!draftId) {
+            console.log("on save", fields);
             socket.emit("newDraft", fields);
             setSearchTerm("");
             setLocation(!location);
@@ -110,44 +113,6 @@ export default function Report({ match, history }) {
         }
     };
 
-    // const searchHtml = (
-    //     <>
-    //         {searchTerm && (
-    //             <>
-    //                 {searchTerm && searchData.length > 0 ? (
-    //                     <>
-    //                         <div className="dropDown">
-    //                             {searchData.map((searchData, index) => (
-    //                                 <div
-    //                                     key={index}
-    //                                     tabIndex={0}
-    //                                     className="dropDownElement"
-    //                                     onInput={onInput}
-    //                                     onClick={() => {
-    //                                         setSearchTerm(
-    //                                             searchData.place_name
-    //                                         );
-    //                                         setFields({
-    //                                             ...fields,
-    //                                             where: searchData.place_name,
-    //                                             ...pin,
-    //                                         });
-
-    //                                         setCenter(searchData.center);
-    //                                         setSearchData([]);
-    //                                     }}
-    //                                 >
-    //                                     {searchData.place_name}
-    //                                 </div>
-    //                             ))}
-    //                         </div>
-    //                     </>
-    //                 ) : null}
-    //             </>
-    //         )}
-    //     </>
-    // );
-
     const handleInputs = (e) => {
         setFields({
             ...fields,
@@ -169,6 +134,12 @@ export default function Report({ match, history }) {
         setWhatValue(data.what);
         // setCurrentDate(data.when.slice(0, 16));
         // console.log(currentDateString);
+        setValueDate(
+            moment(data.when).format("YYYY-MM-DD") +
+                `T` +
+                moment(data.when).format("HH:mm")
+        );
+
         setWhyValue(data.why);
         setSearchTerm(data.wherehappened);
         setCenter([Number(data.longitude), Number(data.latitude)]);
@@ -180,7 +151,11 @@ export default function Report({ match, history }) {
         setFields({
             who: data.who,
             what: data.what,
-            when: data.when.slice(0, 16),
+            // when: data.when,
+            when:
+                moment(data.when).format("YYYY-MM-DD") +
+                `T` +
+                moment(data.when).format("HH:mm"),
             where: data.wherehappened,
             longitude: Number(data.longitude),
             latitude: Number(data.latitude),
@@ -247,10 +222,7 @@ export default function Report({ match, history }) {
                             name="who"
                             ref={who}
                             value={fields.who || ""}
-                            InputLabelProps={{
-                                shrink: fields.who ? true : false,
-                            }}
-                            inputProps={{ className: classes.input }}
+                            classes={classes}
                             onChange={(e) => {
                                 handleInputs(e);
                             }}
@@ -261,16 +233,13 @@ export default function Report({ match, history }) {
                             variant="outlined"
                             name="what"
                             value={fields.what || ""}
-                            InputLabelProps={{
-                                shrink: fields.what ? true : false,
-                            }}
+                            classes={classes}
                             ref={what}
-                            inputProps={{ className: classes.input }}
                             onChange={(e) => {
                                 handleInputs(e);
                             }}
                         />
-                        <TextField
+                        {/* <TextField
                             name="when"
                             ref={when}
                             id="datetime-local"
@@ -284,14 +253,51 @@ export default function Report({ match, history }) {
                                     moment().format("HH:mm")
                             }
                             variant="outlined"
-                            inputProps={{ className: classes.input }}
+                            inputProps={{ className: classes.root }}
                             onChange={(e) => {
                                 handleInputs(e);
                             }}
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                        />
+                        /> */}
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <DateTimePicker
+                                renderInput={(props) => (
+                                    <TextField {...props} classes={classes} />
+                                )}
+                                label="When"
+                                inputRef={dateInput}
+                                value={fields.when || valueDate}
+                                mask={"__.__.____ __:__"}
+                                inputFormat="dd.MM.yyyy HH:mm"
+                                PopperProps={{
+                                    placement: "bottom-end",
+                                    modifiers: [
+                                        {
+                                            name: "offset",
+                                            enabled: true,
+                                            options: {
+                                                offset: [50, 0],
+                                            },
+                                        },
+                                    ],
+                                }}
+                                ampm={false}
+                                onChange={(newValue) => {
+                                    setValueDate(newValue);
+
+                                    handleInputs({
+                                        target: {
+                                            name: "when",
+                                            value: newValue,
+                                        },
+                                    });
+                                }}
+                            />
+                        </LocalizationProvider>
+
                         {/* <label htmlFor="when">When:</label>
                 <input
                     name="when"
@@ -325,10 +331,7 @@ export default function Report({ match, history }) {
                             name="why"
                             ref={why}
                             value={fields.why || ""}
-                            InputLabelProps={{
-                                shrink: fields.why ? true : false,
-                            }}
-                            inputProps={{ className: classes.input }}
+                            classes={classes}
                             onChange={(e) => {
                                 handleInputs(e);
                             }}
@@ -353,7 +356,7 @@ export default function Report({ match, history }) {
                                     ...pin,
                                 });
                             }}
-                            value={value}
+                            value={value || searchTerm}
                             onChange={(event, newValue) => {
                                 setValue(newValue);
 
@@ -401,6 +404,7 @@ export default function Report({ match, history }) {
                         <div className="buttons">
                             {fields.who &&
                             fields.what &&
+                            fields.when &&
                             fields.where &&
                             fields.longitude &&
                             fields.latitude &&

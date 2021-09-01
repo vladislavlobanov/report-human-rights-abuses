@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import MailTo from "./mailto";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 export default function Search() {
     const [searchTerm, setSearchTerm] = useState();
