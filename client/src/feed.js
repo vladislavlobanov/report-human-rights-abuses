@@ -143,34 +143,40 @@ export default function Feed() {
                         <div className="feedCardsContainer">
                             {headlines.map((headline, index) => (
                                 <div key={index} className="feedCard">
-                                    <div>
-                                        Published by:{" "}
-                                        <Link to={`/case/${headline.id}`}>
-                                            {headline.first} {headline.last}
-                                        </Link>
-                                    </div>
-                                    <div>
-                                        Contact: {""}
-                                        <MailTo
-                                            label={headline.email}
-                                            mailto={"mailto:" + headline.email}
-                                        />
-                                    </div>
-                                    <div>
-                                        Date:{" "}
-                                        <span>
-                                            {dateConverter(headline.timestamp)}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span className="makeBold">
-                                            {headline.headline}{" "}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <Link to={`/case/${headline.id}`}>
-                                            Full case
-                                        </Link>
+                                    <div className="feedCardWrapper">
+                                        <div>
+                                            Published by:{" "}
+                                            <Link to={`/case/${headline.id}`}>
+                                                {headline.first} {headline.last}
+                                            </Link>
+                                        </div>
+                                        <div>
+                                            Contact: {""}
+                                            <MailTo
+                                                label={headline.email}
+                                                mailto={
+                                                    "mailto:" + headline.email
+                                                }
+                                            />
+                                        </div>
+                                        <div>
+                                            Date:{" "}
+                                            <span>
+                                                {dateConverter(
+                                                    headline.timestamp
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className="makeBold">
+                                                {headline.headline}{" "}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <Link to={`/case/${headline.id}`}>
+                                                Full case
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

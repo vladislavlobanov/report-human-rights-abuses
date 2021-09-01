@@ -105,22 +105,25 @@ export default function InfoCard({
                         {/* <div>
                         Exact location: {draft.longitude}, {draft.latitude}
                     </div> */}
+
                         <div
                             className={
-                                standalone ? "smallMapAlone" : "smallMap"
+                                standalone ? "smallMapAloneCont" : "smallMap"
                             }
                         >
-                            <SmallMap
-                                mapboxApiAccessToken={secrets.mapbox}
-                                center={[
-                                    Number(draft.longitude),
-                                    Number(draft.latitude),
-                                ]}
-                                receivedPin={{
-                                    longitude: Number(draft.longitude),
-                                    latitude: Number(draft.latitude),
-                                }}
-                            />
+                            <div className="smallMapAlone">
+                                <SmallMap
+                                    mapboxApiAccessToken={secrets.mapbox}
+                                    center={[
+                                        Number(draft.longitude),
+                                        Number(draft.latitude),
+                                    ]}
+                                    receivedPin={{
+                                        longitude: Number(draft.longitude),
+                                        latitude: Number(draft.latitude),
+                                    }}
+                                />
+                            </div>
                         </div>
                         <div className="buttons">
                             {showButton && (

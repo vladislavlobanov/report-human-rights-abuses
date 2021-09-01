@@ -145,6 +145,11 @@ h2 {
     height: 200px;
 }
 
+.smallMapAloneCont {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
 .smallMapAlone {
     display: flex;
     flex-direction: column;
@@ -241,10 +246,12 @@ textarea {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
+    width: 100vw;
 }
 
 .feedCard {
     display: flex;
+
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -253,12 +260,21 @@ textarea {
     text-align: center;
     gap: 5px;
 
-    padding: 10px;
+    padding: 50px;
 
     background-color: #e6ddc6a2;
-    padding: 50px;
+    max-width: 300px;
+    width: 100%;
     border-radius: 5px;
     border: 1px solid #dadadab9;
+}
+
+.feedCardWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: inherit;
+    min-height: 200px;
 }
 
 .feedContainer {

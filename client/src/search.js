@@ -73,39 +73,46 @@ export default function Search() {
                             <div className="feedCardsContainer">
                                 {searchData.map((searchData, index) => (
                                     <div key={index} className="feedCard">
-                                        <div>
-                                            Published by:{" "}
-                                            <Link to={`/case/${searchData.id}`}>
-                                                {searchData.first}{" "}
-                                                {searchData.last}
-                                            </Link>
-                                        </div>
-                                        <div>
-                                            Contact: {""}
-                                            <MailTo
-                                                label={searchData.email}
-                                                mailto={
-                                                    "mailto:" + searchData.email
-                                                }
-                                            />
-                                        </div>
-                                        <div>
-                                            Date:{" "}
-                                            <span>
-                                                {dateConverter(
-                                                    searchData.timestamp
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span className="makeBold">
-                                                {searchData.headline}{" "}
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <Link to={`/case/${searchData.id}`}>
-                                                Full case
-                                            </Link>
+                                        <div className="feedCardWrapper">
+                                            <div>
+                                                Published by:{" "}
+                                                <Link
+                                                    to={`/case/${searchData.id}`}
+                                                >
+                                                    {searchData.first}{" "}
+                                                    {searchData.last}
+                                                </Link>
+                                            </div>
+                                            <div>
+                                                Contact: {""}
+                                                <MailTo
+                                                    label={searchData.email}
+                                                    mailto={
+                                                        "mailto:" +
+                                                        searchData.email
+                                                    }
+                                                />
+                                            </div>
+                                            <div>
+                                                Date:{" "}
+                                                <span>
+                                                    {dateConverter(
+                                                        searchData.timestamp
+                                                    )}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span className="makeBold">
+                                                    {searchData.headline}{" "}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <Link
+                                                    to={`/case/${searchData.id}`}
+                                                >
+                                                    Full case
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
