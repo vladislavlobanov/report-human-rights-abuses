@@ -419,7 +419,7 @@ export default function Report({ match, history }) {
                                 <button disabled>Save</button>
                             )}
 
-                            {drafts.length > 0 ? (
+                            {drafts.length > 0 && !draftId ? (
                                 <button
                                     onClick={(e) => {
                                         e.preventDefault();
