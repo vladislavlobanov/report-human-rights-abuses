@@ -69,7 +69,7 @@ header {
 .rightSide {
     display: flex;
     flex: 1;
-    min-width: 700px;
+    width: 700px;
     max-width: 100%;
     padding-left: 10px;
     padding-right: 10px;
@@ -166,13 +166,16 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    word-break: break-all;
 }
 
 .fiveQuestionsAlone {
     display: flex;
-    text-align: center;
+    text-align: left;
     flex-direction: column;
     gap: 5px;
+    width: 300px;
+    word-break: break-all;
 }
 
 .wrapper {
@@ -245,7 +248,8 @@ textarea {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 300px;
+    max-width: 300px;
+    word-break: break-all;
     text-align: center;
     gap: 5px;
 
@@ -375,7 +379,7 @@ header h1 {
 
 .headerRight {
     display: flex;
-    flex: 1;
+    flex-shrink: 0;
     justify-content: flex-end;
     align-items: center;
     padding-right: 20px;
@@ -435,7 +439,7 @@ header h1 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-@media screen and (max-width: 1020px) {
+@media screen and (max-width: 1090px) {
     header {
         display: flex;
         flex-direction: column;
@@ -443,8 +447,12 @@ header h1 {
         height: fit-content;
         align-content: center;
         background-color: #a19882;
-        padding-left: 20px;
+
         padding-bottom: 20px;
+    }
+
+    .logo {
+        padding: 0;
     }
 
     .logo a {
@@ -458,6 +466,7 @@ header h1 {
         justify-content: flex-end;
         align-items: center;
         gap: 20px;
+        padding: 0;
     }
 
     .logo h1 {

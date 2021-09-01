@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import InfoCard from "./infocard";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 export default function CaseProfile({ match, history, standalone }) {
     const [isValid, setValid] = useState();

@@ -1,20 +1,22 @@
 /* eslint-disable indent */
 import GeocoderService from "@mapbox/mapbox-sdk/services/geocoding";
 const secrets = require("../../server/secrets.json");
+
 import Map from "./map";
 import InfoCard from "./infocard";
+
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { socket } from "./socket.js";
+
 import TextField from "@material-ui/core/TextField";
 import { Autocomplete } from "@material-ui/core";
-import moment from "moment";
 import { makeStyles } from "@material-ui/styles";
-
 import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import DateTimePicker from "@material-ui/lab/DateTimePicker";
+import moment from "moment";
 
 export default function Report({ match, history }) {
     let textInput = useRef(null);
@@ -89,11 +91,6 @@ export default function Report({ match, history }) {
             });
         } else {
             socket.emit("editDraft", fields);
-            // setCurrentDate(
-            //     moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
-            // );
-            // setFields({ who: "", what: "", why: "" });
-
             setSearchTerm("");
             setLocation(!location);
             setCurrentDate(
@@ -209,13 +206,6 @@ export default function Report({ match, history }) {
                 </h2>
                 <form className="insideForm">
                     <div className="inputs">
-                        {/* <input
-                    name="who"
-                    ref={who}
-                    onChange={(e) => {
-                        handleInputs(e);
-                    }}
-                /> */}
                         <TextField
                             label="Who"
                             variant="outlined"
@@ -240,28 +230,6 @@ export default function Report({ match, history }) {
                                 handleInputs(e);
                             }}
                         />
-                        {/* <TextField
-                            name="when"
-                            ref={when}
-                            id="datetime-local"
-                            label="When"
-                            inputRef={dateInput}
-                            type="datetime-local"
-                            value={
-                                fields.when ||
-                                moment().format("YYYY-MM-DD") +
-                                    `T` +
-                                    moment().format("HH:mm")
-                            }
-                            variant="outlined"
-                            inputProps={{ className: classes.root }}
-                            onChange={(e) => {
-                                handleInputs(e);
-                            }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        /> */}
 
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DateTimePicker
@@ -298,33 +266,6 @@ export default function Report({ match, history }) {
                                 }}
                             />
                         </LocalizationProvider>
-
-                        {/* <label htmlFor="when">When:</label>
-                <input
-                    name="when"
-                    ref={when}
-                    onChange={(e) => {
-                        handleInputs(e);
-                    }}
-                /> */}
-
-                        {/* <div className="whereContainer">
-                    <input
-                        autoComplete="off"
-                        ref={where}
-                        // onClick={onInput}
-                        name="where"
-                        value={searchTerm}
-                        // onInput={() => {
-                        //     onInput;
-                        // }}
-                        onChange={(e) => {
-                            setSearchTerm(e.target.value);
-                            // handleInputs(e);
-                        }}
-                    />
-                    {searchHtml}
-                </div> */}
 
                         <TextField
                             label="Why"
