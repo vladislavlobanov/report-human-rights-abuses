@@ -5,7 +5,7 @@ const secrets = require("../../server/secrets.json");
 import Map from "./map";
 import InfoCard from "./infocard";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { socket } from "./socket.js";
@@ -19,8 +19,6 @@ import DateTimePicker from "@material-ui/lab/DateTimePicker";
 import moment from "moment";
 
 export default function Report({ match, history }) {
-    let textInput = useRef(null);
-    let dateInput = useRef(null);
     const useStyles = makeStyles((theme) => ({
         root: {
             backgroundColor: "white",
@@ -33,18 +31,12 @@ export default function Report({ match, history }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState([]);
     const [center, setCenter] = useState([]);
-    const [pin, setPin] = useState();
+    const [pin, setPin] = useState("");
     const [fields, setFields] = useState({});
     const [location, setLocation] = useState(false);
     const [receivedPin, setReceivedPin] = useState({});
     const [draftId, setDraftId] = useState();
-    const [currentDateString, setCurrentDate] = useState("");
-    const [inputValue, setInputValue] = useState("");
     const [value, setValue] = useState("");
-    const [whoValue, setWhoValue] = useState("");
-    const [whatValue, setWhatValue] = useState("");
-    const [whyValue, setWhyValue] = useState("");
-
     const [valueDate, setValueDate] = useState(new Date());
 
     const geocoder = GeocoderService({
@@ -57,28 +49,26 @@ export default function Report({ match, history }) {
         dispatch(receiveDrafts());
     }, []);
 
+    useEffect(() => {
+        setFields({
+            ...fields,
+            ...pin,
+        });
+    }, [pin]);
+
     const drafts = useSelector((state) => state.draftReports);
 
     const handlePinChange = (longitude, latitude) => {
         setPin({ longitude: longitude, latitude: latitude });
     };
 
-    const who = useRef();
-    const what = useRef();
-    const when = useRef();
-    const where = useRef();
-    const why = useRef();
-
     const handleMore = async (e) => {
         e.preventDefault();
         if (!draftId) {
-            console.log("on save", fields);
             socket.emit("newDraft", fields);
             setSearchTerm("");
             setLocation(!location);
-            setCurrentDate(
-                moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
-            );
+
             setValue("");
             setPin("");
             setFields({
@@ -93,9 +83,7 @@ export default function Report({ match, history }) {
             socket.emit("editDraft", fields);
             setSearchTerm("");
             setLocation(!location);
-            setCurrentDate(
-                moment().format("YYYY-MM-DD") + `T` + moment().format("HH:mm")
-            );
+
             setValue("");
             setPin("");
             setFields({
@@ -118,27 +106,15 @@ export default function Report({ match, history }) {
         });
     };
 
-    useEffect(() => {
-        setFields({
-            ...fields,
-            ...pin,
-        });
-    }, [pin]);
-
     const handleEdit = (e, data) => {
         e.preventDefault();
 
-        setWhoValue(data.who);
-        setWhatValue(data.what);
-        // setCurrentDate(data.when.slice(0, 16));
-        // console.log(currentDateString);
         setValueDate(
             moment(data.when).format("YYYY-MM-DD") +
                 `T` +
                 moment(data.when).format("HH:mm")
         );
 
-        setWhyValue(data.why);
         setSearchTerm(data.wherehappened);
         setCenter([Number(data.longitude), Number(data.latitude)]);
         setReceivedPin({
@@ -172,7 +148,7 @@ export default function Report({ match, history }) {
         });
     }, []);
 
-    async function onInput(value) {
+    const onInput = async (value) => {
         if (value) {
             let abort;
             (async () => {
@@ -188,7 +164,7 @@ export default function Report({ match, history }) {
                 abort = true;
             };
         }
-    }
+    };
 
     if (!drafts) {
         return null;
@@ -197,21 +173,13 @@ export default function Report({ match, history }) {
     return (
         <div className="reportContainer">
             <div className="leftSide">
-                <h2
-                    onClick={() => {
-                        console.log(draftId);
-                    }}
-                >
-                    Report Your Incident
-                </h2>
+                <h2>Report Your Incident</h2>
                 <form className="insideForm">
                     <div className="inputs">
                         <TextField
                             label="Who"
                             variant="outlined"
-                            inputRef={textInput}
                             name="who"
-                            ref={who}
                             value={fields.who || ""}
                             classes={classes}
                             onChange={(e) => {
@@ -225,7 +193,6 @@ export default function Report({ match, history }) {
                             name="what"
                             value={fields.what || ""}
                             classes={classes}
-                            ref={what}
                             onChange={(e) => {
                                 handleInputs(e);
                             }}
@@ -237,7 +204,6 @@ export default function Report({ match, history }) {
                                     <TextField {...props} classes={classes} />
                                 )}
                                 label="When"
-                                inputRef={dateInput}
                                 value={fields.when || valueDate}
                                 mask={"__.__.____ __:__"}
                                 inputFormat="dd.MM.yyyy HH:mm"
@@ -271,7 +237,6 @@ export default function Report({ match, history }) {
                             label="Why"
                             variant="outlined"
                             name="why"
-                            ref={why}
                             value={fields.why || ""}
                             classes={classes}
                             onChange={(e) => {
@@ -283,7 +248,6 @@ export default function Report({ match, history }) {
                     <div className="map">
                         <Autocomplete
                             freeSolo
-                            // options={options}
                             options={searchData.map(
                                 (searchData) => searchData.place_name
                             )}

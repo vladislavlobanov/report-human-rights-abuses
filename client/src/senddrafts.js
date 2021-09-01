@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import Select from "react-select";
 import { socket } from "./socket.js";
 import { receiveDrafts } from "./redux/draftreports/slice.js";
 import { useDispatch, useSelector } from "react-redux";

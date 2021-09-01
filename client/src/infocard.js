@@ -2,6 +2,7 @@ import { socket } from "./socket.js";
 import SmallMap from "./smallmap";
 const secrets = require("../../server/secrets.json");
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import MailTo from "./mailto";
 
@@ -31,6 +32,10 @@ export default function InfoCard({
         d = new Intl.DateTimeFormat("en-UK", options).format(d).toString();
         return d;
     };
+
+    if (!drafts) {
+        return null;
+    }
 
     return (
         <>
@@ -102,9 +107,6 @@ export default function InfoCard({
                                 {draft.wherehappened}
                             </div>
                         </div>
-                        {/* <div>
-                        Exact location: {draft.longitude}, {draft.latitude}
-                    </div> */}
 
                         <div
                             className={

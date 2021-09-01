@@ -15,9 +15,6 @@ export class ResetPassword extends Component {
     }
 
     handleChange({ target }) {
-        console.log("which input is running handleChange?", target.name);
-        console.log("value the user typed:", target.value);
-        // updating state!
         this.setState(
             {
                 [target.name]: target.value,
@@ -26,11 +23,7 @@ export class ResetPassword extends Component {
         );
     }
     handleSubmit(e) {
-        e.preventDefault(); // prevents button from triggering a refresh
-        console.log("user clicked ResetPwd");
-        // when the btn gets clicked we want to make an axios request sending
-        // over our value of state
-        console.log("this.state in ResetPwd", this.state);
+        e.preventDefault();
 
         if (this.state.view == 1) {
             axios
@@ -90,12 +83,8 @@ export class ResetPassword extends Component {
                 });
         }
     }
-    componentDidMount() {
-        console.log("ResetPwd just mounted");
-    }
 
     determineViewToRender() {
-        // this method determines what the render!
         if (this.state.view === 1) {
             return (
                 <div className="mainCon">

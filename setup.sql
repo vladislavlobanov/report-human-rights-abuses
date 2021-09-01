@@ -45,5 +45,3 @@ DROP TABLE IF EXISTS report;
      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  );   
 
-
-INSERT INTO organizations (name, email) VALUES ('Frontline Defenders', 'frd@frd.org');

@@ -23,10 +23,15 @@ export default function Map({
         mapboxApiAccessToken: mapboxApiAccessToken,
     });
 
-    const [location, setLocation] = useState({
-        longitude: "",
-        latitude: "",
-    });
+    const [location, setLocation] = useState({});
+
+    const [unmounted, setUnmounted] = useState(false);
+
+    useEffect(() => {
+        return () => {
+            setUnmounted(true);
+        };
+    }, []);
 
     useEffect(() => {
         setLocation({
@@ -56,6 +61,9 @@ export default function Map({
 
     const ICON_SIZE = 20;
 
+    if (unmounted) {
+        return null;
+    }
     return (
         <ReactMapGL
             {...viewport}

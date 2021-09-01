@@ -455,6 +455,11 @@ header h1 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.searchInput {
+    background-color: white;
+    width: 300px;
+}
+
 @media screen and (max-width: 1090px) {
     header {
         display: flex;

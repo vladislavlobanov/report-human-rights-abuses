@@ -3,19 +3,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import MailTo from "./mailto";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/styles";
 
 export default function Search() {
     const [searchTerm, setSearchTerm] = useState();
     const [searchData, setSearchData] = useState([]);
-    const useStyles = makeStyles((theme) => ({
-        input: {
-            backgroundColor: "white",
-            borderRadius: "inherit",
-            width: "300px",
-        },
-    }));
-    const classes = useStyles();
+
     useEffect(() => {
         if (searchTerm) {
             let abort;
@@ -51,16 +43,12 @@ export default function Search() {
         <div className="feedContainer">
             <h2>Search</h2>
 
-            {/* <input
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Enter your search request"
-            ></input> */}
-
             <TextField
+                className="searchInput"
+                autoComplete="off"
                 label="Enter your search request"
                 variant="outlined"
                 name="search"
-                inputProps={{ className: classes.input }}
                 onChange={(e) => {
                     setSearchTerm(e.target.value);
                 }}

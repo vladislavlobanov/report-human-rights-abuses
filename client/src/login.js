@@ -21,7 +21,6 @@ export class Login extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log("this.state in login", this.state);
         axios
             .post("/api/login", this.state)
             .then((resp) => {
@@ -56,9 +55,6 @@ export class Login extends Component {
                                 </h2>
                             )}
                             <form className="formRegContainter">
-                                {/* <label htmlFor="email">Email</label>
-                        <input name="email" onChange={this.handleChange} /> */}
-
                                 <TextField
                                     variant="outlined"
                                     name="email"
@@ -71,14 +67,6 @@ export class Login extends Component {
                                     }}
                                 />
 
-                                {/* <label htmlFor="password" onChange={this.handleChange}>
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={this.handleChange}
-                        /> */}
                                 <TextField
                                     variant="outlined"
                                     name="password"

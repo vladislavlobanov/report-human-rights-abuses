@@ -1,9 +1,7 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { socket } from "./socket.js";
-import MailTo from "./mailto";
 import axios from "axios";
 
 const MyCases = () => {
@@ -39,7 +37,7 @@ const MyCases = () => {
 
     return (
         <div className="feedContainer">
-            <h2 onClick={() => console.log(myCases)}>My submitted cases</h2>
+            <h2>My submitted cases</h2>
             <div className="insideFeedContainer">
                 {!myCases.length ? (
                     <div>No submitted cases yet</div>

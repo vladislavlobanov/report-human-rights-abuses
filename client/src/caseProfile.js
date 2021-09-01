@@ -16,7 +16,6 @@ export default function CaseProfile({ match, history, standalone }) {
         input: {
             backgroundColor: "white",
             borderRadius: "inherit",
-            // width: "300px",
         },
     }));
     const classes = useStyles();
@@ -97,19 +96,13 @@ export default function CaseProfile({ match, history, standalone }) {
                             <div className="mainConBack">
                                 <div className="pageCode">
                                     <form className="codeForm">
-                                        <h2 onClick={() => console.log()}>
+                                        <h2>
                                             This case is only accessible with a
                                             code
                                         </h2>
                                         <label htmlFor="code">
                                             Please enter the code
                                         </label>
-                                        {/* <input
-                                    name="code"
-                                    onChange={(e) =>
-                                        setInputData(e.target.value)
-                                    }
-                                /> */}
 
                                         <TextField
                                             label="Code"

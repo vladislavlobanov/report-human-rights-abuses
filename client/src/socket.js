@@ -19,7 +19,6 @@ export const init = (store) => {
     });
 
     socket.on("myCasesEmit", (data) => {
-        console.log(data);
         store.dispatch(casesReceived(data));
     });
 

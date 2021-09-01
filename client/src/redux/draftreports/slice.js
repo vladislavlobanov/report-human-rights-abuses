@@ -42,11 +42,6 @@ export function draftReceived(draft) {
 }
 
 export function deleteDraft(id) {
-    // return {
-    //     type: "drafts/deleteDraft",
-    //     payload: { id },
-    // };
-
     if (!id.inEdit) {
         return async (dispatch) => {
             try {

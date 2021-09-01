@@ -49,7 +49,6 @@ export default function Feed() {
             return;
         }
         if (hideMoreButton !== null && hideMoreButton !== true) {
-            console.log("we are here");
             dispatch(moveOneHeadline(headlines[headlines.length - 1]));
         }
     }, [moveHeadlines]);
@@ -73,7 +72,7 @@ export default function Feed() {
                     setHideMoreButton(false);
                 }
             } catch (err) {
-                console.log("Err checking if button should hide", err);
+                console.log("Err in checking if button should hide", err);
             }
         }
     }, [lowest]);
