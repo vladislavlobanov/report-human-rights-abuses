@@ -60,6 +60,7 @@ header {
     border-radius: 5px;
     border: 1px solid #dadadab9;
     padding: 10px;
+    width: calc(100% - 20px);
 }
 
 .mapWrapper {
@@ -132,9 +133,6 @@ h2 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: calc(100% - 20px);
-    padding-left: 10px;
-    padding-right: 10px;
     gap: 30px;
     justify-content: center;
 }
@@ -184,7 +182,7 @@ h2 {
 }
 
 .wrapper {
-    width: calc(100vw - 20px);
+    /* width: calc(100vw - 20px); */
     height: calc(100vh - 55px);
     overflow: scroll;
     display: flex;
@@ -246,12 +244,11 @@ textarea {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
-    width: 100vw;
+    width: calc(100vw - 20px);
 }
 
 .feedCard {
     display: flex;
-
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -368,6 +365,8 @@ header h1 {
 
 .belowHeaderCont {
     font-family: Arial, Helvetica, sans-serif;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .headerRight a {
@@ -415,6 +414,9 @@ header h1 {
     border-radius: 5px;
     border: 1px solid #dadadab9;
     font-family: Arial, Helvetica, sans-serif;
+    width: fit-content;
+    max-width: calc(100% - 100px);
+    text-align: center;
 }
 
 .register {
@@ -495,5 +497,9 @@ header h1 {
     }
     .wrapper {
         height: fit-content;
+    }
+
+    .caseCard {
+        width: calc(100% - 20px);
     }
 }
