@@ -120,17 +120,6 @@ export default function SendDrafts({ userId }) {
                         </div>
                     </div>
                     <form className="sendDraftsForm">
-                        {/* 
-                        <Select
-                            value={selectedOption}
-                            onChange={(selectedOption) => {
-                                handleSelect(selectedOption);
-                            }}
-                            options={options}
-                            className="basic-multi-select"
-                            classNamePrefix="select"
-                            isMulti
-                        /> */}
                         <div className="autoCompleteWrapper">
                             <Autocomplete
                                 multiple
