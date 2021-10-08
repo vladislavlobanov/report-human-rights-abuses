@@ -7,7 +7,7 @@ Main technologies used: React/Redux, Node.js/Express, PostgreSQL, Socket.IO, Map
 ## Install
 
 1. NPM INSTALL
-2. Postgres tables structure is in setupt.sql
+2. Postgres tables structure is in setup.sql in the root folder
 3. Add secrets.json to /server with the following structure (replace XXX):
 ```javascript
     {
