@@ -9,7 +9,7 @@ Main technologies used: React/Redux, Node.js/Express, PostgreSQL, Socket.IO, Map
 1. NPM INSTALL
 2. Postgres tables structure is in setupt.sql
 3. Add secrets.json to /server with the following structure (replace XXX):
-
+```javascript
     {
     // Add a long PWD for cookies
     "cookiePwd": "XXX",
@@ -21,3 +21,4 @@ Main technologies used: React/Redux, Node.js/Express, PostgreSQL, Socket.IO, Map
     //Add an email (preferablly @gmail) to test AWS SES
     "email": "XXX"
     }
+```
